@@ -1,0 +1,6 @@
+Prompt
+please summerise the following privacy policies.  Privacy Policy : {policy}
+Following policy contains details about data privacy, please summerise it.  policy : {policy}
+Following text is from terms of service data privacy policy, please summerise it. text : {policy}
+Following terms of service text contains information about data privacy policy, please summerise. text : {policy}
+Can you summerise the following text. text : {policy}

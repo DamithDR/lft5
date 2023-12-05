@@ -1,0 +1,7 @@
+Prompt
+Following sentence is a piece from Term of Service of an online platform, could you please categoriese its fairness based on the options below: {options}	fairness		options: 1. potentially_unfair 2. clearly_unfair 3. clearly_fair
+I want to know whether the following terms of service sentece is either potentially_unfair or clearly_unfair or clearly_fair.
+Classify this sentence from online terms of service, based on fairness to one of the following options:  {options}  sentence to classify: {sentence}
+Online terms of services fairness could be questioned from different standpoints. Could you please classify following sentence to one of the options given below.  Sentence : {sentence} Options:
+Categorise the fairness/unfairness of the following terms and conditions sentence into one of the following options: {sentence} {options}
+select the fairness of the following terms of service sentence from one of the given faireness values. {sentence} {options}

@@ -1,0 +1,7 @@
+Prompt
+Please select all applicable EuroVoc concepts which are related to following text containing EU laws. law : <law>
+EuroVoc is the EU's multilingual and multidisciplinary thesaurus. It contains keywords, which are used to describe the content of documents in EUR-Lex. Could you please select the the EuroVoc keywords which represent the following EU laws. law : <law>
+EuroVoc is the EU's multilingual and multidisciplinary thesaurus which has law concepts. Select the main concepts from EuroVoc which are being described in the following EU law. law : <law>
+Each EU law has related keywords or EuroVoc concepts which are related. Could you please select which conceptes are related to the following law? law : <law>
+Understanding EuroVoc concepts related to a EU law enables legal practitioners refer related areas through concepts. Could you please list the EuroVoc concepts/keywords related to the following law. law : <law>
+EU laws can be classified to multiple EuroVoc concepts according to its description. Can you classify which concepts are involved in the following law text? law : <law>
