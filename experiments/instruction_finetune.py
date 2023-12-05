@@ -52,6 +52,7 @@ def run(args):
         #     load_in_8bit=True,  #if you want to load the 8-bit model
         #     device_map='auto',
         device_map="auto",
+        offload_folder="offload", offload_state_dict=True,
         # max_memory={0: args.max_mem_consumption},  # , 2: "20GIB", 3: "20GIB"},#, "cpu": "60GiB"},
         trust_remote_code=True,
     )
