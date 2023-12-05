@@ -1,12 +1,8 @@
-torch==2.0.1
-transformers @ git+https://github.com/huggingface/transformers@de9255de27abfcae4a1f816b904915f0b1e23cd9
-tokenizers==0.13.3
-peft @ git+https://github.com/huggingface/peft.git@9f7492577ff91c51077308f98dade45bf32c268a
-jsonargparse[signatures]  # CLI
-bitsandbytes==0.39.1 # quantize
-accelerate @ git+https://github.com/huggingface/accelerate@e0f5e030098aada5e112708eee3537475dea3a83
-datasets==2.13.1  # quantize/gptq.py
-zstandard==0.19.0  # prepare_redpajama.py
+pandas
+datasets
+transformers
+torch
+peft
+bitsandbytes==0.39.1
 scipy
-loralib==0.1.1
-inops==0.6.1
+accelerate
