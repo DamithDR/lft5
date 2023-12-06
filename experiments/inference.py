@@ -32,9 +32,11 @@ def run(args):
     dataset = dataset[300:400]
 
     out_list = []
+    num = 0
     for data in dataset['instructions']:
+        num += 1
         prompt = data.split('<assistant>')[0]
-
+        print(f'processing no = {num}')
         # encode the prompt
         encoding = tokenizer(prompt, return_tensors="pt").to(model.device)
         # do the inference
