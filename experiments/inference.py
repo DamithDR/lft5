@@ -29,7 +29,7 @@ def run(args):
     gen_config.eos_token_id = tokenizer.eos_token_id
 
     dataset = pd.read_csv(f'data/permuted_data/{args.dataset_file_name}', sep='\t')
-    dataset = dataset[300:400]
+    dataset = dataset[300:320]
 
     out_list = []
     num = 0
