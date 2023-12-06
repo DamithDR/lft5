@@ -37,7 +37,7 @@ def print_trainable_parameters(model):
 
 def run(args):
     dataset = pd.read_csv(f'data/permuted_data/{args.dataset_file_name}')
-    data = Dataset.from_pandas(dataset['instructions'].to_list())
+    data = Dataset.from_pandas(dataset[['instructions']])
 
     # bnb_config = BitsAndBytesConfig(
     #     load_in_4bit=True,
