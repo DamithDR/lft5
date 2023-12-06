@@ -52,7 +52,7 @@ def run(args):
         device_map="auto",
         offload_folder="offload", offload_state_dict=True,
         # max_memory={0: "20GIB", 1: "20GIB", 2: "20GIB", 3: "20GIB", "cpu": "60GiB"},
-        max_memory={0: "20GIB", 1: "20GIB", 2: "20GIB", 3: "20GIB", "cpu": "60GiB"},
+        # max_memory={0: "20GIB", 1: "20GIB", 2: "20GIB", 3: "20GIB", "cpu": "60GiB"},
         trust_remote_code=True,
     )
     tokenizer.pad_token = tokenizer.eos_token
