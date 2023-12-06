@@ -10,7 +10,7 @@ def run(args):
     config = PeftConfig.from_pretrained("finetuned_tiiuae_falcon-7b-instruct/")
     model = AutoModelForCausalLM.from_pretrained(
         config.base_model_name_or_path,
-
+        device_map="auto",
         trust_remote_code=True,
     )
 
