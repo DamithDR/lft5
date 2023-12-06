@@ -37,7 +37,7 @@ def print_trainable_parameters(model):
 
 def run(args):
     dataset = pd.read_csv(f'data/permuted_data/{args.dataset_file_name}', sep='\t')
-    dataset = dataset[:100]
+    dataset = dataset[:200]
     data = Dataset.from_pandas(dataset[['instructions']])
 
     bnb_config = BitsAndBytesConfig(
@@ -97,6 +97,7 @@ def run(args):
 
     model.config.use_cache = False  # silence the warnings. Please re-enable for inference!
     trainer.train()
+    model.save_pretrained(f'finetuned_{str(args.model_name).replace("/", "_")}')
 
 
 if __name__ == '__main__':
