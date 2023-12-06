@@ -9,6 +9,7 @@ from data.CaseHoldData import CaseHoldData
 from data.LedgarData import LedgarData
 from data.MultiEURLEXData import MultiEURLEXData
 from data.PrivacyQAData import PrivacyQAData
+from data.ScotusData import ScotusData
 
 from data.Uk_INabsData import UK_INabsData
 
@@ -23,10 +24,11 @@ file_map = {
     "MultiEURLEX.tsv": (MultiEURLEXData, 'multi_eurlex'),
     "PrivacyQA.tsv": (PrivacyQAData, 'LegalLLMs/privacy-qa'),
     "UK-Abs_IN-Abs.tsv": (UK_INabsData, 'joelniklaus/legal_case_document_summarization'),
-    "multi_lexsum.tsv": (MultiLexSumData, 'allenai/multi_lexsum')
+    "multi_lexsum.tsv": (MultiLexSumData, 'allenai/multi_lexsum'),
+    "scotus.tsv": (ScotusData,'lex_glue')
 }
 
-prompt_files=["PrivacyQA.tsv"]
+prompt_files=["scotus.tsv"]
 
 def run():
     for file in prompt_files:

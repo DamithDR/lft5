@@ -1,0 +1,6 @@
+Prompt
+Can you select the most suited issue area for the following court opinion? opinion : {opinion}
+Select the relevant are of the following court opinion. opinion : {opinion}
+Court opinions could be categorised to different areas. Could you select the relevant area for the following court opinion? opinion : {opinion}
+I am in need of identifying the the relevant are of the following court opinion. opinion : {opinion}
+Give me the relevant law area to this court opinion. opinion : {opinion}
