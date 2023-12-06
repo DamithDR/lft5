@@ -16,7 +16,7 @@ def tokenize_inputs(text_input):
 
 
 def tokenize_prompt(text_input):
-    tok_full_prompt = tokenizer(text_input, padding=True, truncation=False)
+    tok_full_prompt = tokenizer(text_input['instructions'], padding=True, truncation=False)
     return tok_full_prompt
 
 
@@ -36,7 +36,7 @@ def print_trainable_parameters(model):
 
 
 def run(args):
-    dataset = pd.read_csv(f'data/permuted_data/{args.dataset_file_name}')
+    dataset = pd.read_csv(f'data/permuted_data/{args.dataset_file_name}', sep='\t')
     data = Dataset.from_pandas(dataset[['instructions']])
 
     # bnb_config = BitsAndBytesConfig(
@@ -45,7 +45,6 @@ def run(args):
     #     bnb_4bit_quant_type="nf4",
     #     bnb_4bit_compute_dtype=torch.bfloat16
     # )
-    print('a')
 
     model = AutoModelForCausalLM.from_pretrained(
         args.model_name,
