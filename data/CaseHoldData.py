@@ -12,16 +12,16 @@ class CaseHoldData(DataClass):
     def generate_permutations(self):
         permutations = []
         for prompt in self.prompts:
-            for context, ans0, ans1, ans2, ans3, ans4, correct_ans in zip(self.input_df['1'],
-                                                                          self.input_df['2'],
-                                                                          self.input_df['3'],
-                                                                          self.input_df['4'],
-                                                                          self.input_df['5'],
-                                                                          self.input_df['6'],
-                                                                          self.input_df['12'],
+            for context, ans0, ans1, ans2, ans3, ans4, correct_ans in zip(self.input_df['citing_prompt'],
+                                                                          self.input_df['holding_0'],
+                                                                          self.input_df['holding_1'],
+                                                                          self.input_df['holding_2'],
+                                                                          self.input_df['holding_3'],
+                                                                          self.input_df['holding_4'],
+                                                                          self.input_df['label'],
                                                                           ):
                 # if not math.isnan(ans0) and not math.isnan(ans1) and not math.isnan(ans2) and not math.isnan(ans3) and not math.isnan(ans4) and
-                if not math.isnan(correct_ans):
+                if not math.isnan(int(correct_ans)):
                     options = f"""
                         1. {ans0}\n
                         2. {ans1}\n

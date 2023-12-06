@@ -18,7 +18,7 @@ prompt_files = os.listdir(base_path)
 print(prompt_files)
 
 file_map = {
-    "CaseHOLD.tsv": (CaseHoldData, 'casehold.csv'),
+    "CaseHOLD.tsv": (CaseHoldData, 'casehold/casehold'),
     "LEDGAR.tsv": (LedgarData, 'LEDGAR_2016-2019_clean.jsonl'),
     "MultiEURLEX.tsv": (MultiEURLEXData, 'multi_eurlex'),
     "PrivacyQA.tsv": (PrivacyQAData, 'policy_train_data.tsv'),
@@ -26,6 +26,7 @@ file_map = {
     "multi_lexsum.tsv": (MultiLexSumData, 'allenai/multi_lexsum')
 }
 
+prompt_files=["CaseHOLD.tsv"]
 
 def run():
     for file in prompt_files:

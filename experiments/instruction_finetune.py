@@ -36,7 +36,14 @@ def print_trainable_parameters(model):
 
 
 def run(args):
-    dataset = pd.read_csv(f'data/permuted_data/{args.dataset_file_name}', sep='\t')
+    data_files = str(args.dataset_file_name).split(',')
+    dataset = pd.DataFrame()
+    if len(data_files) > 1:
+        for data_file in data_files:
+            d_set = pd.read_csv(f'data/permuted_data/{data_file}', sep='\t')
+            dataset = pd.concat([dataset, d_set], axis=0)
+    else:
+        dataset = pd.read_csv(f'data/permuted_data/{args.dataset_file_name}', sep='\t')
     data = Dataset.from_pandas(dataset[['instructions']])
 
     bnb_config = BitsAndBytesConfig(
@@ -103,8 +110,8 @@ if __name__ == '__main__':
     parser = argparse.ArgumentParser(
         description='''evaluates models arabic readability assessment''')
     parser.add_argument('--model_name', type=str, required=True, help='model_name')
-    parser.add_argument('--dataset_file_name', type=str, required=True, help='dataset_name')
-    parser.add_argument('--max_mem_consumption', type=str, required=True, help='max memory consumption per device')
+    parser.add_argument('--dataset_file_name', type=str, required=True, help='comma separated dataset file names ')
+    parser.add_argument('--max_mem_consumption', type=str, required=False, help='max memory consumption per device')
     args = parser.parse_args()
 
     tokenizer = AutoTokenizer.from_pretrained(args.model_name)
