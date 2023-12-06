@@ -37,6 +37,7 @@ def print_trainable_parameters(model):
 
 def run(args):
     dataset = pd.read_csv(f'data/permuted_data/{args.dataset_file_name}', sep='\t')
+    dataset = dataset[:100]
     data = Dataset.from_pandas(dataset[['instructions']])
 
     # bnb_config = BitsAndBytesConfig(
@@ -60,7 +61,7 @@ def run(args):
     data = data.map(tokenize_prompt)
 
     model.gradient_checkpointing_enable()
-    model = prepare_model_for_kbit_training(model)
+    model = prepare_model_for_kbit_training(model, use_gradient_checkpointing=False)
 
     config = LoraConfig(
         r=16,
