@@ -19,14 +19,14 @@ print(prompt_files)
 
 file_map = {
     "CaseHOLD.tsv": (CaseHoldData, 'casehold/casehold'),
-    "LEDGAR.tsv": (LedgarData, 'LEDGAR_2016-2019_clean.jsonl'),
+    "LEDGAR.tsv": (LedgarData, 'lex_glue'),
     "MultiEURLEX.tsv": (MultiEURLEXData, 'multi_eurlex'),
     "PrivacyQA.tsv": (PrivacyQAData, 'policy_train_data.tsv'),
     "UK-Abs_IN-Abs.tsv": (UK_INabsData, 'joelniklaus/legal_case_document_summarization'),
     "multi_lexsum.tsv": (MultiLexSumData, 'allenai/multi_lexsum')
 }
 
-prompt_files=["CaseHOLD.tsv"]
+prompt_files=["LEDGAR.tsv"]
 
 def run():
     for file in prompt_files:
