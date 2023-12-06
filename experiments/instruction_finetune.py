@@ -60,7 +60,7 @@ def run(args):
     tokenizer.pad_token = tokenizer.eos_token
     data = data.map(tokenize_prompt)
 
-    model.gradient_checkpointing_enable()
+    # model.gradient_checkpointing_enable()
     model = prepare_model_for_kbit_training(model, use_gradient_checkpointing=False)
 
     config = LoraConfig(
