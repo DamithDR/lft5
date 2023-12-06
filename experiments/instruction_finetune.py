@@ -37,7 +37,7 @@ def print_trainable_parameters(model):
 
 def run(args):
     dataset = pd.read_csv(f'data/permuted_data/{args.dataset_file_name}')
-    data = Dataset.from_pandas(dataset)
+    data = Dataset.from_pandas(dataset['instructions'].to_list())
 
     # bnb_config = BitsAndBytesConfig(
     #     load_in_4bit=True,
@@ -45,6 +45,7 @@ def run(args):
     #     bnb_4bit_quant_type="nf4",
     #     bnb_4bit_compute_dtype=torch.bfloat16
     # )
+    print('a')
 
     model = AutoModelForCausalLM.from_pretrained(
         args.model_name,
@@ -53,7 +54,7 @@ def run(args):
         #     device_map='auto',
         device_map="auto",
         offload_folder="offload", offload_state_dict=True,
-        # max_memory={0: args.max_mem_consumption},  # , 2: "20GIB", 3: "20GIB"},#, "cpu": "60GiB"},
+        max_memory={0: args.max_mem_consumption},  # , 2: "20GIB", 3: "20GIB"},#, "cpu": "60GiB"},
         trust_remote_code=True,
     )
     tokenizer.pad_token = tokenizer.eos_token
