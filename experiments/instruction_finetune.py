@@ -37,7 +37,6 @@ def print_trainable_parameters(model):
 
 def run(args):
     dataset = pd.read_csv(f'data/permuted_data/{args.dataset_file_name}', sep='\t')
-    dataset = dataset[:200]
     data = Dataset.from_pandas(dataset[['instructions']])
 
     bnb_config = BitsAndBytesConfig(
