@@ -58,14 +58,11 @@ def run(args):
         quantization_config=bnb_config,
         device_map="auto",
         offload_folder="offload", offload_state_dict=True,
-        # max_memory={0: "20GIB", 1: "20GIB", 2: "20GIB", 3: "20GIB", "cpu": "60GiB"},
-        # max_memory={0: "20GIB", 1: "20GIB", 2: "20GIB", 3: "20GIB", "cpu": "60GiB"},
         trust_remote_code=True,
     )
     tokenizer.pad_token = tokenizer.eos_token
     data = data.map(tokenize_prompt)
 
-    # model.gradient_checkpointing_enable()
     model = prepare_model_for_kbit_training(model, use_gradient_checkpointing=False)
 
     config = LoraConfig(
@@ -92,6 +89,7 @@ def run(args):
         optim="paged_adamw_8bit",
         lr_scheduler_type='cosine',
         warmup_ratio=0.05,
+        report_to="wandb"
     )
 
     trainer = transformers.Trainer(
@@ -104,6 +102,9 @@ def run(args):
     model.config.use_cache = False  # silence the warnings. Please re-enable for inference!
     trainer.train()
     model.save_pretrained(f'finetuned_{str(args.model_name).replace("/", "_")}')
+    with open(f'finetuned_{str(args.model_name).replace("/", "_")}/stat.txt', 'w') as f:
+        f.write(f'Data files used : {",".join(data_files)}\n')
+        f.write(f'model used : {args.model_name}')
 
 
 if __name__ == '__main__':
