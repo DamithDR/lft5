@@ -1,0 +1,6 @@
+Prompt
+Can you please find the most relevant holding for the following case of of the mentioned answers? case : {case} answers: {answers}
+Following court case text contains a place holder for legal holding; <HOLDING>. Could you please select the most appropriate answer from the multiple answers given below? case: {case} answers: {answers}
+Select the most suitable legal holding from the answers to replace the <HOLDING> tag in the given case text. case: {case} answers: {answers} 
+Following is a court case text where you have to find the correct legal holding from answers to replace the <HOLDING> tag in the case. The case and the answers as follows. case: {case} answers: {answers} 
+You have provided with five legal holdings in which one of them will replace the <HOLDING> tag in the following legal case. Could you please find the most appropriate legal hodling ?  case : {case} answers: {answers}

@@ -1,6 +1,0 @@
-Prompt
-If the following answer is relevant to the asked question, please say Relevant, Irrelevant otherwise, question: {question} - answer:{answer}
-Following online privacy related question is answered as follows, question : {question} - answer : {answer} could you please tell whether the answer is Relevant or Irrelevant to the question?
-Could you please label the following online privacy related question and answer pair?  question : {question} - answer : {answer} choose one.  1. Relevant 2. Irrelevant
-Can you tell me whether the answer for the following online user privacy related question is relevant or not?  question : {question} - answer : {answer} Choose one from below:  1.Relevant  2. Irrelevant
-You are given following privacy related question and a answer. Please select whether the answer is relevant to the question or not.  question : {question} - answer : {answer} Choose Relevent or Irrelevant.

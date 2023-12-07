@@ -1,19 +1,20 @@
-import pandas as pd
-
 from data.DataClass import DataClass
 from data.datafiles.ledgar_categories import LEDGAR_CATEGORIES
 
 
 class LedgarData(DataClass):
     def __init__(self, data_source, prompts):
-        super().__init__(data_source, prompts,data_config="ledgar", context_alias='<provision>')
+        super().__init__(data_source, prompts, data_config="ledgar", context_alias='<provision>')
         self.ledgar_categories = LEDGAR_CATEGORIES
 
-    def generate_permutations(self):
+    def permute(self, prompt, df, omit_ans=False):
         permutations = []
-        for prompt in self.prompts:
-            for provision, label in zip(self.input_df['text'], self.input_df['label']):
-                full_input = self.generate_prompt(prompt=prompt, context=provision, options='', answer=self.ledgar_categories[label])
-                permutations.append(full_input)
-
-        return pd.DataFrame({'instructions': permutations})
+        for provision, label in zip(df['text'], df['label']):
+            if omit_ans:
+                answer = ''
+            else:
+                answer = self.ledgar_categories[label]
+            full_input = self.generate_prompt(prompt=prompt, context=provision, options='',
+                                              answer=answer)
+            permutations.append(full_input)
+        return permutations

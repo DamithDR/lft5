@@ -1,6 +1,5 @@
 import json
 
-import pandas as pd
 from datasets import load_dataset
 
 from data.DataClass import DataClass
@@ -18,15 +17,16 @@ class MultiEURLEXData(DataClass):
     def get_labels(self, labels):
         return [self.eurovoc_concepts[self.classlabel.int2str(int(label))][self.data_config] for label in labels]
 
-    def generate_permutations(self):
+    def permute(self, prompt, df, omit_ans=False):
         permutations = []
+        for law, labels in zip(df['text'], df['labels']):
+            label_lst = self.get_labels(list(labels))
+            if omit_ans:
+                answer = ''
+            else:
+                answer = ",".join(label_lst)
 
-        for prompt in self.prompts:
-            for law, labels in zip(self.input_df['text'], self.input_df['labels']):
-                label_lst = self.get_labels(list(labels))
-
-                full_input = self.generate_prompt(prompt=prompt, context=law, options='',
-                                                  answer=",".join(label_lst))
-                permutations.append(full_input)
-
-        return pd.DataFrame({'instructions': permutations})
+            full_input = self.generate_prompt(prompt=prompt, context=law, options='',
+                                              answer=answer)
+            permutations.append(full_input)
+        return permutations

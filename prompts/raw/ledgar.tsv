@@ -1,0 +1,7 @@
+Prompt	context	answer_field
+What are the most suited lables to classify the following provisions ? provision : <provision>
+List the best suited labels/ categories to describe following provisions taken from U.S. Securities and Exchange Commission contracts. provision : <provision>
+Can you give me a category/ categories which better describes the following contract provision?	provision : <provision>
+Could you choose a topic for the following provision from US securities and exchange commissions provision. contract : <provision>
+Can you give me a label or list of labels which describe the following contract text? provision : <provision>
+Find the best suited label for the following paragraph, which contains legal provision text. provision : <provision>
