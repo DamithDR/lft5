@@ -1,5 +1,5 @@
 python -m prompts.preprocess_prompts
 
-python -m experiments.instruction_finetune --model_name tiiuae/falcon-7b-instruct --dataset_file_name ledgar.tsv
+python -m experiments.instruction_finetune --model_name tiiuae/falcon-7b-instruct --dataset_file_name Train_ledgar.tsv --max_mem 44GiB
 
 # look for files in "prompts/raw" to use for dataset_file_name param, multiple files supported.

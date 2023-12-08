@@ -57,6 +57,8 @@ def run(args):
         args.model_name,
         quantization_config=bnb_config,
         device_map="auto",
+        max_memory={0: args.max_mem, 1: args.max_mem, 2: args.max_mem, 3: args.max_mem, 4: args.max_mem,
+                    5: args.max_mem, 6: args.max_mem, 7: args.max_mem, "cpu": "120GiB"},
         offload_folder="offload", offload_state_dict=True,
         trust_remote_code=True,
     )
@@ -102,7 +104,7 @@ def run(args):
     model.config.use_cache = False  # silence the warnings. Please re-enable for inference!
     trainer.train()
     model.save_pretrained(f'finetuned_{str(args.model_name).replace("/", "_")}_{",".join(data_files)}')
-    with open(f'finetuned_{str(args.model_name).replace("/", "_")}/stat.txt', 'w') as f:
+    with open(f'finetuned_{str(args.model_name).replace("/", "_")}_{",".join(data_files)}/stat.txt', 'w') as f:
         f.write(f'Data files used : {",".join(data_files)}\n')
         f.write(f'model used : {args.model_name}')
 
@@ -112,7 +114,7 @@ if __name__ == '__main__':
         description='''evaluates models arabic readability assessment''')
     parser.add_argument('--model_name', type=str, required=True, help='model_name')
     parser.add_argument('--dataset_file_name', type=str, required=True, help='comma separated dataset file names ')
-    parser.add_argument('--max_mem_consumption', type=str, required=False, help='max memory consumption per device')
+    parser.add_argument('--max_mem', type=str, required=False, help='max memory consumption per device')
     args = parser.parse_args()
 
     tokenizer = AutoTokenizer.from_pretrained(args.model_name)
