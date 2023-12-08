@@ -114,7 +114,7 @@ if __name__ == '__main__':
         description='''evaluates models arabic readability assessment''')
     parser.add_argument('--model_name', type=str, required=True, help='model_name')
     parser.add_argument('--dataset_file_name', type=str, required=True, help='comma separated dataset file names ')
-    parser.add_argument('--max_mem', type=str, required=False, help='max memory consumption per device')
+    parser.add_argument('--max_mem', type=str, required=True, help='max memory consumption per device')
     args = parser.parse_args()
 
     tokenizer = AutoTokenizer.from_pretrained(args.model_name)
