@@ -57,8 +57,7 @@ def run(args):
         args.model_name,
         quantization_config=bnb_config,
         device_map="auto",
-        max_memory={0: args.max_mem, 1: args.max_mem, 2: args.max_mem, 3: args.max_mem, 4: args.max_mem,
-                    5: args.max_mem, 6: args.max_mem, 7: args.max_mem, "cpu": "120GiB"},
+        max_memory={0: args.max_mem, 1: args.max_mem, 2: args.max_mem, 3: args.max_mem, "cpu": "120GiB"},
         offload_folder="offload", offload_state_dict=True,
         trust_remote_code=True,
     )
