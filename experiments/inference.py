@@ -7,7 +7,7 @@ from transformers import AutoTokenizer, AutoModelForCausalLM
 
 
 def run(args):
-    config = PeftConfig.from_pretrained("finetuned_tiiuae_falcon-7b-instruct/")
+    config = PeftConfig.from_pretrained(args.model)
     model = AutoModelForCausalLM.from_pretrained(
         config.base_model_name_or_path,
         device_map="auto",
@@ -17,7 +17,7 @@ def run(args):
     tokenizer = AutoTokenizer.from_pretrained(
         config.base_model_name_or_path)
 
-    model_inf = PeftModel.from_pretrained(model, "finetuned_tiiuae_falcon-7b-instruct")
+    model_inf = PeftModel.from_pretrained(model, args.model)
 
     # set teh generation configuration params
     gen_config = model_inf.generation_config
@@ -28,16 +28,14 @@ def run(args):
     gen_config.pad_token_id = tokenizer.eos_token_id
     gen_config.eos_token_id = tokenizer.eos_token_id
 
-    dataset = pd.read_csv(f'data/permuted_data/{args.dataset_file_name}', sep='\t')
-    dataset = dataset[300:320]
+    dataset = pd.read_csv(f'data/permuted_data/{args.test_file_name}', sep='\t')
 
     out_list = []
+    total_no = len(dataset)
     num = 0
-    for data in dataset['instructions']:
+    for prompt in dataset['instructions']:
         num += 1
-        prompt = data.split('<assistant>')[0]
-        prompt = f'{prompt} <assistant> :'
-        print(f'processing no = {num}')
+        print(f'processing : {num}/{total_no}')
         # encode the prompt
         encoding = tokenizer(prompt, return_tensors="pt").to(model.device)
         # do the inference
@@ -47,12 +45,15 @@ def run(args):
         out_list.append(tokenizer.decode(outputs[0], skip_special_tokens=True))
 
     predictions = pd.DataFrame({'gold': dataset['instructions'], 'predictions': out_list})
-    predictions.to_csv('predictions.tsv', sep='\t', index=False)
+    flat_model_name = str(args.model).replace('/', '')
+    predictions.to_csv(f'{flat_model_name}_{args.test_file_name}_predictions.tsv', sep='\t', index=False)
 
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(
-        description='''evaluates models arabic readability assessment''')
-    parser.add_argument('--dataset_file_name', type=str, required=True, help='dataset_name')
+        description='''evaluates models on legal instruction finetuning''')
+    parser.add_argument('--test_file_name', type=str, required=True, help='dataset_name')
+    parser.add_argument('--model', type=str, required=True, help='model_name_or_path')
+
     args = parser.parse_args()
     run(args)

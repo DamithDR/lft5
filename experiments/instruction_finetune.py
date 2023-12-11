@@ -110,7 +110,7 @@ def run(args):
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(
-        description='''evaluates models arabic readability assessment''')
+        description='''evaluates models on legal instruction finetuning''')
     parser.add_argument('--model_name', type=str, required=True, help='model_name')
     parser.add_argument('--dataset_file_name', type=str, required=True, help='comma separated dataset file names ')
     parser.add_argument('--max_mem', type=str, required=True, help='max memory consumption per device')
