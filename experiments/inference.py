@@ -31,7 +31,6 @@ def run(args):
     gen_config.eos_token_id = tokenizer.eos_token_id
 
     dataset = pd.read_csv(f'data/permuted_data/{args.test_file_name}', sep='\t')
-    dataset = dataset[:20]
     out_list = []
 
     num = 0
@@ -53,7 +52,8 @@ def run(args):
 
     predictions = pd.DataFrame({'gold': dataset['instructions'], 'predictions': out_list})
     flat_model_name = str(args.model_name).replace('/', '')
-    predictions.to_csv(f'{flat_model_name}_{args.test_file_name}_predictions.tsv', sep='\t', index=False)
+    dataset_name = str(args.test_file_name).split('.')[0]
+    predictions.to_csv(f'{flat_model_name}_{dataset_name}_predictions.tsv', sep='\t', index=False)
 
 
 if __name__ == '__main__':
