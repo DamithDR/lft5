@@ -7,7 +7,7 @@ from transformers import AutoTokenizer, AutoModelForCausalLM
 
 
 def run(args):
-    config = PeftConfig.from_pretrained(args.model)
+    config = PeftConfig.from_pretrained(args.model_name)
     model = AutoModelForCausalLM.from_pretrained(
         config.base_model_name_or_path,
         device_map="auto",
@@ -17,7 +17,7 @@ def run(args):
     tokenizer = AutoTokenizer.from_pretrained(
         config.base_model_name_or_path)
 
-    model_inf = PeftModel.from_pretrained(model, args.model)
+    model_inf = PeftModel.from_pretrained(model, args.model_name)
 
     # set teh generation configuration params
     gen_config = model_inf.generation_config
@@ -45,7 +45,7 @@ def run(args):
         out_list.append(tokenizer.decode(outputs[0], skip_special_tokens=True))
 
     predictions = pd.DataFrame({'gold': dataset['instructions'], 'predictions': out_list})
-    flat_model_name = str(args.model).replace('/', '')
+    flat_model_name = str(args.model_name).replace('/', '')
     predictions.to_csv(f'{flat_model_name}_{args.test_file_name}_predictions.tsv', sep='\t', index=False)
 
 
@@ -53,7 +53,7 @@ if __name__ == '__main__':
     parser = argparse.ArgumentParser(
         description='''evaluates models on legal instruction finetuning''')
     parser.add_argument('--test_file_name', type=str, required=True, help='dataset_name')
-    parser.add_argument('--model', type=str, required=True, help='model_name_or_path')
+    parser.add_argument('--model_name', type=str, required=True, help='model_name_or_path')
 
     args = parser.parse_args()
     run(args)
