@@ -48,8 +48,8 @@ def run(args):
         with torch.inference_mode():
             outputs = model.generate(input_ids=encoding.input_ids, attention_mask=encoding.attention_mask,
                                      generation_config=gen_config)
-        for out in out_list:
-            out_list.append(tokenizer.decode(out, skip_special_tokens=True))
+            print(outputs)
+        out_list.extend(tokenizer.decode(outputs, skip_special_tokens=True))
 
     predictions = pd.DataFrame({'gold': dataset['instructions'], 'predictions': out_list})
     flat_model_name = str(args.model_name).replace('/', '')
