@@ -48,9 +48,10 @@ def run(args):
         with torch.inference_mode():
             outputs = model.generate(input_ids=encoding.input_ids, attention_mask=encoding.attention_mask,
                                      generation_config=gen_config)
-        out_list.append(tokenizer.decode(outputs[0], skip_special_tokens=True))
+        for out in out_list:
+            out_list.append(tokenizer.decode(out, skip_special_tokens=True))
 
-    predictions = pd.DataFrame({'gold': dataset['instructions'], 'predictions': [out for out in out_list]})
+    predictions = pd.DataFrame({'gold': dataset['instructions'], 'predictions': out_list})
     flat_model_name = str(args.model_name).replace('/', '')
     predictions.to_csv(f'{flat_model_name}_{args.test_file_name}_predictions.tsv', sep='\t', index=False)
 
