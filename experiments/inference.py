@@ -15,7 +15,8 @@ def run(args):
     )
 
     tokenizer = AutoTokenizer.from_pretrained(
-        config.base_model_name_or_path)
+        config.base_model_name_or_path
+    )
 
     model_inf = PeftModel.from_pretrained(model, args.model_name)
 
@@ -41,7 +42,7 @@ def run(args):
         data_batch = data_list[prev_num:num]
         print(f'processing : {num}/{total_no}')
         # encode the prompt
-        encoding = tokenizer(data_batch, return_tensors="pt").to(model.device)
+        encoding = tokenizer(data_batch, padding=True, truncation=False, return_tensors="pt").to(model.device)
         # do the inference
         with torch.inference_mode():
             outputs = model.generate(input_ids=encoding.input_ids, attention_mask=encoding.attention_mask,
