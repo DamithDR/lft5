@@ -50,7 +50,7 @@ def run(args):
                                      generation_config=gen_config)
         out_list.append(tokenizer.decode(outputs[0], skip_special_tokens=True))
 
-    predictions = pd.DataFrame({'gold': dataset['instructions'], 'predictions': out_list})
+    predictions = pd.DataFrame({'gold': dataset['instructions'], 'predictions': [out for out in out_list]})
     flat_model_name = str(args.model_name).replace('/', '')
     predictions.to_csv(f'{flat_model_name}_{args.test_file_name}_predictions.tsv', sep='\t', index=False)
 
@@ -60,7 +60,7 @@ if __name__ == '__main__':
         description='''evaluates models on legal instruction finetuning''')
     parser.add_argument('--test_file_name', type=str, required=True, help='dataset_name')
     parser.add_argument('--model_name', type=str, required=True, help='model_name_or_path')
-    parser.add_argument('--batch_size', type=int, default=1, required=False, help='inference batch size')
+    parser.add_argument('--batch_size', type=int, default=10, required=False, help='inference batch size')
 
     args = parser.parse_args()
     run(args)
