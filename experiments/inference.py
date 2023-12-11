@@ -17,6 +17,7 @@ def run(args):
     tokenizer = AutoTokenizer.from_pretrained(
         config.base_model_name_or_path
     )
+    tokenizer.pad_token = tokenizer.eos_token
 
     model_inf = PeftModel.from_pretrained(model, args.model_name)
 
