@@ -49,7 +49,7 @@ def run(args):
             outputs = model.generate(input_ids=encoding.input_ids, attention_mask=encoding.attention_mask,
                                      generation_config=gen_config)
             print(outputs)
-        out_list.extend(tokenizer.decode(outputs, skip_special_tokens=True))
+        out_list.extend(tokenizer.decode(**outputs, skip_special_tokens=True))
 
     predictions = pd.DataFrame({'gold': dataset['instructions'], 'predictions': out_list})
     flat_model_name = str(args.model_name).replace('/', '')
