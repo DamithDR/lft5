@@ -33,7 +33,7 @@ def run(args):
     out_list = []
 
     num = 0
-    data_list = dataset['instructions']
+    data_list = dataset['instructions'].to_list()
     total_no = len(dataset)
     for i in range(0, total_no, args.batch_size):
         prev_num = num
