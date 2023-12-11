@@ -29,15 +29,19 @@ def run(args):
     gen_config.eos_token_id = tokenizer.eos_token_id
 
     dataset = pd.read_csv(f'data/permuted_data/{args.test_file_name}', sep='\t')
-
+    dataset = dataset[:20]
     out_list = []
-    total_no = len(dataset)
+
     num = 0
-    for prompt in dataset['instructions']:
-        num += 1
+    data_list = dataset['instructions']
+    total_no = len(dataset)
+    for i in range(0, total_no, args.batch_size):
+        prev_num = num
+        num = num + args.batch_size
+        data_batch = data_list[prev_num:num]
         print(f'processing : {num}/{total_no}')
         # encode the prompt
-        encoding = tokenizer(prompt, return_tensors="pt").to(model.device)
+        encoding = tokenizer(data_batch, return_tensors="pt").to(model.device)
         # do the inference
         with torch.inference_mode():
             outputs = model.generate(input_ids=encoding.input_ids, attention_mask=encoding.attention_mask,
@@ -54,6 +58,7 @@ if __name__ == '__main__':
         description='''evaluates models on legal instruction finetuning''')
     parser.add_argument('--test_file_name', type=str, required=True, help='dataset_name')
     parser.add_argument('--model_name', type=str, required=True, help='model_name_or_path')
+    parser.add_argument('--batch_size', type=int, default=1, required=False, help='inference batch size')
 
     args = parser.parse_args()
     run(args)
