@@ -37,19 +37,19 @@ def run(args):
     num = 0
     data_list = dataset['instructions'].to_list()
     total_no = len(dataset)
-    for i in range(0, total_no, args.batch_size):
-        prev_num = num
-        num = num + args.batch_size
-        data_batch = data_list[prev_num:num]
-        print(f'processing : {num}/{total_no}')
-        # encode the prompt
-        encoding = tokenizer(data_batch, padding=True, truncation=False, return_tensors="pt").to(model.device)
-        # do the inference
-        with torch.inference_mode():
+    with torch.inference_mode():
+        for i in range(0, total_no, args.batch_size):
+            prev_num = num
+            num = num + args.batch_size
+            data_batch = data_list[prev_num:num]
+            print(f'processing : {num}/{total_no}')
+            # encode the prompt
+            encoding = tokenizer(data_batch, padding=True, truncation=False, return_tensors="pt").to(model.device)
+            # do the inference
             outputs = model.generate(input_ids=encoding.input_ids, attention_mask=encoding.attention_mask,
                                      generation_config=gen_config)
-            print(outputs)
-        out_list.extend(tokenizer.decode(**outputs, skip_special_tokens=True))
+            outputs = outputs.tolist()
+            out_list.extend([tokenizer.decode(out, skip_special_tokens=True) for out in outputs])
 
     predictions = pd.DataFrame({'gold': dataset['instructions'], 'predictions': out_list})
     flat_model_name = str(args.model_name).replace('/', '')
