@@ -30,7 +30,25 @@ def run(args):
     gen_config.pad_token_id = tokenizer.eos_token_id
     gen_config.eos_token_id = tokenizer.eos_token_id
 
-    dataset = pd.read_csv(f'data/permuted_data/{args.test_file_name}', sep='\t')
+    # dataset = pd.read_csv(f'data/permuted_data/{args.test_file_name}', sep='\t')
+
+    data_files = [
+        'Test_casehold.tsv',
+        'Test_ledgar.tsv',
+        'Test_multi_eurlex.tsv',
+        'Test_multi_lexsum.tsv',
+        'Test_privacy_qa.tsv'
+        'Test_scotus.tsv',
+        'Test_uk_abs_in_abs.tsv'
+    ]
+    dataset = pd.DataFrame()
+    if len(data_files) > 1:
+        for data_file in data_files:
+            d_set = pd.read_csv(f'data/permuted_data/{data_file}', sep='\t')
+            dataset = pd.concat([dataset, d_set], axis=0)
+    else:
+        dataset = pd.read_csv(f'data/permuted_data/{args.dataset_file_name}', sep='\t')
+
     out_list = []
 
     num = 0
@@ -59,7 +77,7 @@ def run(args):
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(
         description='''evaluates models on legal instruction finetuning''')
-    parser.add_argument('--test_file_name', type=str, required=True, help='dataset_name')
+    parser.add_argument('--test_file_name', type=str, required=False, help='dataset_name')
     parser.add_argument('--model_name', type=str, required=True, help='model_name_or_path')
     parser.add_argument('--batch_size', type=int, default=10, required=False, help='inference batch size')
 
