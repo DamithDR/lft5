@@ -43,10 +43,12 @@ def run(args):
     ]
     dataset = pd.DataFrame()
     if len(data_files) > 1:
+        dataset_name = 'all'
         for data_file in data_files:
             d_set = pd.read_csv(f'data/permuted_data/{data_file}', sep='\t')
             dataset = pd.concat([dataset, d_set], axis=0)
     else:
+        dataset_name = str(args.test_file_name).split('.')[0]
         dataset = pd.read_csv(f'data/permuted_data/{args.dataset_file_name}', sep='\t')
 
     out_list = []
@@ -70,7 +72,6 @@ def run(args):
 
     predictions = pd.DataFrame({'gold': dataset['instructions'], 'predictions': out_list})
     flat_model_name = str(args.model_name).replace('/', '')
-    dataset_name = str(args.test_file_name).split('.')[0]
     predictions.to_csv(f'{flat_model_name}_{dataset_name}_predictions.tsv', sep='\t', index=False)
 
 
