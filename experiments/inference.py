@@ -37,7 +37,7 @@ def run(args):
         'Test_ledgar.tsv',
         'Test_multi_eurlex.tsv',
         'Test_multi_lexsum.tsv',
-        'Test_privacy_qa.tsv'
+        'Test_privacy_qa.tsv',
         'Test_scotus.tsv',
         'Test_uk_abs_in_abs.tsv'
     ]
@@ -49,7 +49,7 @@ def run(args):
             dataset = pd.concat([dataset, d_set], axis=0)
     else:
         dataset_name = str(args.test_file_name).split('.')[0]
-        dataset = pd.read_csv(f'data/permuted_data/{args.dataset_file_name}', sep='\t')
+        dataset = pd.read_csv(f'data/permuted_data/{args.test_file_name}', sep='\t')
 
     out_list = []
 
