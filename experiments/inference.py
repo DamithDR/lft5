@@ -1,4 +1,5 @@
 import argparse
+import gc
 
 import pandas as pd
 import torch
@@ -6,7 +7,14 @@ from peft import PeftModel, PeftConfig
 from transformers import AutoTokenizer, AutoModelForCausalLM
 
 import os
+
 os.environ["PYTORCH_CUDA_ALLOC_CONF"] = "max_split_size_mb:512"
+
+
+def clear_gpu_memory():
+    torch.cuda.empty_cache()
+    gc.collect()
+
 
 def run(args):
     config = PeftConfig.from_pretrained(args.model_name)
@@ -72,6 +80,7 @@ def run(args):
             detach = outputs.detach().cpu().numpy()
             outputs = detach.tolist()
             out_list.extend([tokenizer.decode(out, skip_special_tokens=True) for out in outputs])
+            clear_gpu_memory()
 
     predictions = pd.DataFrame({'gold': dataset['instructions'], 'predictions': out_list})
     flat_model_name = str(args.model_name).replace('/', '')
