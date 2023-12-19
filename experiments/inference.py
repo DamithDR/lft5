@@ -65,7 +65,7 @@ def run(args):
             data_batch = data_list[prev_num:num]
             print(f'processing : {num}/{total_no}')
             # encode the prompt
-            encoding = tokenizer(data_batch, padding=True, truncation=False, return_tensors="pt").to(model.device)
+            encoding = tokenizer(data_batch, padding=True, truncation=True, return_tensors="pt").to(model.device)
             # do the inference
             outputs = model.generate(input_ids=encoding.input_ids, attention_mask=encoding.attention_mask,
                                      generation_config=gen_config)
