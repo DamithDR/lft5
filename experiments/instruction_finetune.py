@@ -9,6 +9,8 @@ from transformers import AutoTokenizer, AutoModelForCausalLM, BitsAndBytesConfig
 from peft import LoraConfig, get_peft_model
 from peft import prepare_model_for_kbit_training
 
+import os
+os.environ["PYTORCH_CUDA_ALLOC_CONF"] = "max_split_size_mb:512"
 
 def tokenize_inputs(text_input):
     tok_full_prompt = tokenizer(text_input, padding=True, truncation=False)

@@ -5,6 +5,8 @@ import torch
 from peft import PeftModel, PeftConfig
 from transformers import AutoTokenizer, AutoModelForCausalLM
 
+import os
+os.environ["PYTORCH_CUDA_ALLOC_CONF"] = "max_split_size_mb:512"
 
 def run(args):
     config = PeftConfig.from_pretrained(args.model_name)
