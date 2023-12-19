@@ -69,7 +69,8 @@ def run(args):
             # do the inference
             outputs = model.generate(input_ids=encoding.input_ids, attention_mask=encoding.attention_mask,
                                      generation_config=gen_config)
-            outputs = outputs.tolist()
+            detach = outputs.detach().cpu().numpy()
+            outputs = detach.tolist()
             out_list.extend([tokenizer.decode(out, skip_special_tokens=True) for out in outputs])
 
     predictions = pd.DataFrame({'gold': dataset['instructions'], 'predictions': out_list})
