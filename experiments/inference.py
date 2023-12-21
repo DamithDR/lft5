@@ -28,6 +28,7 @@ def run(args):
         config.base_model_name_or_path
     )
     tokenizer.pad_token = tokenizer.eos_token
+    tokenizer.padding_side = "left"
 
     model_inf = PeftModel.from_pretrained(model, args.model_name)
 

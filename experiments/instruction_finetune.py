@@ -119,5 +119,6 @@ if __name__ == '__main__':
     args = parser.parse_args()
 
     tokenizer = AutoTokenizer.from_pretrained(args.model_name)
+    tokenizer.padding_side = "left"
     data_path = ''
     run(args)
