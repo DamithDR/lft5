@@ -6,6 +6,7 @@ class LedgarData(DataClass):
     def __init__(self, data_source, prompts):
         super().__init__(data_source, prompts, data_config="ledgar", context_alias='<provision>')
         self.ledgar_categories = LEDGAR_CATEGORIES
+        self.filter_dataset()
 
     def permute(self, prompt, df, omit_ans=False):
         permutations = []
@@ -18,3 +19,4 @@ class LedgarData(DataClass):
                                               answer=answer)
             permutations.append(full_input)
         return permutations
+

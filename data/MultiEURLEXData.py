@@ -13,6 +13,7 @@ class MultiEURLEXData(DataClass):
         self.classlabel = self.dataset.features["labels"].feature
         with open('data/datafiles/eurovoc_descriptors.json') as jsonl_file:
             self.eurovoc_concepts = json.load(jsonl_file)
+        self.filter_dataset()
 
     def get_labels(self, labels):
         return [self.eurovoc_concepts[self.classlabel.int2str(int(label))][self.data_config] for label in labels]
@@ -30,3 +31,4 @@ class MultiEURLEXData(DataClass):
                                               answer=answer)
             permutations.append(full_input)
         return permutations
+

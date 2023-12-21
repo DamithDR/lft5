@@ -7,6 +7,7 @@ class ScotusData(DataClass):
     def __init__(self, data_source, prompts):
         super().__init__(data_source, prompts, data_config="scotus", context_alias='{opinion}')
         self.scotus_categories = categories
+        self.filter_dataset()
 
     def permute(self, prompt, df, omit_ans=False):
         permutations = []
@@ -19,3 +20,4 @@ class ScotusData(DataClass):
                                               answer=answer)
             permutations.append(full_input)
         return permutations
+

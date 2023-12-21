@@ -6,12 +6,14 @@ from datasets import load_dataset
 
 
 class DataClass:
-    def __init__(self, data_source, prompts, data_config=None, context_alias="<default>", options_alias='<default>', ):
+    def __init__(self, data_source, prompts, data_config=None, context_alias="<default>", options_alias='<default>',
+                 word_limit=4096):
         self.data_source = data_source
         self.data_config = data_config
         self.prompts = prompts
         self.context_alias = context_alias
         self.option_alias = options_alias
+        self.word_limit = word_limit
         if os.path.isfile(f'data/datafiles/{self.data_source}'):
             if str(self.data_source).endswith('csv'):
                 self.input_df = pd.read_csv(f'data/datafiles/{self.data_source}')
@@ -28,6 +30,15 @@ class DataClass:
                 test_dataset = load_dataset(data_source, split='test')
             self.input_df = train_dataset.to_pandas()
             self.test_input_df = test_dataset.to_pandas()
+
+    def filter_dataset(self):
+
+        self.input_df['word_count'] = self.input_df['text'].apply(lambda x: len(x.split(' ')))
+        self.test_input_df['word_count'] = self.test_input_df['text'].apply(lambda x: len(x.split(' ')))
+
+        self.input_df = self.input_df.drop(self.input_df[self.input_df['word_count'] > self.word_limit].index)
+        self.test_input_df = self.test_input_df.drop(
+            self.test_input_df[self.test_input_df['word_count'] > self.word_limit].index)
 
     def generate_prompt(self, prompt, context, options, answer):
         return f"""

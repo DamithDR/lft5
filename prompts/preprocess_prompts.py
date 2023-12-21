@@ -1,8 +1,6 @@
 import os
 
 import pandas as pd
-from datasets import Dataset
-from transformers import AutoTokenizer
 
 from data.MultiLexSumData import MultiLexSumData
 from data.CaseHoldData import CaseHoldData
@@ -27,7 +25,6 @@ file_map = {
     "multi_lexsum.tsv": (MultiLexSumData, 'allenai/multi_lexsum'),
     "scotus.tsv": (ScotusData, 'lex_glue')
 }
-
 
 def run():
     for file in prompt_files:
