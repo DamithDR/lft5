@@ -1,7 +1,7 @@
 from datasets import load_dataset
 
 config = 'en_all'
-dataset = load_dataset('joelito/Multi_Legal_Pile', config, split='train', streaming=True)
+dataset = load_dataset('joelito/Multi_Legal_Pile', config, split='train')
 
 df = dataset.to_pandas()
 
