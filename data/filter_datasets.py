@@ -9,4 +9,4 @@ df['word_count'] = df['text'].apply(lambda x: len(x.split(' ')))
 
 df = df.drop(df[df['word_count'] > 1024].index)
 
-df.to_csv('en_all_filtered.tsv', sep='\t', index=False)
+df.to_csv('en_all_filtered_1024.tsv', sep='\t', index=False)
