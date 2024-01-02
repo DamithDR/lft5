@@ -1,7 +1,9 @@
+import argparse
 import os
 
 import pandas as pd
 
+import config.word_limit
 from data.MultiLexSumData import MultiLexSumData
 from data.CaseHoldData import CaseHoldData
 from data.LedgarData import LedgarData
@@ -26,6 +28,7 @@ file_map = {
     "scotus.tsv": (ScotusData, 'lex_glue')
 }
 
+
 def run():
     for file in prompt_files:
         data_class, data_file = file_map.get(file)
@@ -38,4 +41,9 @@ def run():
 
 
 if __name__ == '__main__':
+    parser = argparse.ArgumentParser(description='''preprocess prompts''')
+    parser.add_argument('--word_limit', type=int, required=False, help='word_limit')
+    args = parser.parse_args()
+    if args.word_limit:
+        config.word_limit.CONFIG['value'] = args.word_limit
     run()

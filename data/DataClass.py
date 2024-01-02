@@ -4,16 +4,17 @@ from abc import abstractmethod
 import pandas as pd
 from datasets import load_dataset
 
+import config.word_limit
+
 
 class DataClass:
-    def __init__(self, data_source, prompts, data_config=None, context_alias="<default>", options_alias='<default>',
-                 word_limit=4096):
+    def __init__(self, data_source, prompts, data_config=None, context_alias="<default>", options_alias='<default>'):
         self.data_source = data_source
         self.data_config = data_config
         self.prompts = prompts
         self.context_alias = context_alias
         self.option_alias = options_alias
-        self.word_limit = word_limit
+        self.word_limit = config.word_limit.CONFIG['value']
         if os.path.isfile(f'data/datafiles/{self.data_source}'):
             if str(self.data_source).endswith('csv'):
                 self.input_df = pd.read_csv(f'data/datafiles/{self.data_source}')
