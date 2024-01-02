@@ -9,7 +9,14 @@ data_files = [
     'Test_multi_lexsum.tsv',
     'Test_privacy_qa.tsv',
     'Test_scotus.tsv',
-    'Test_uk_abs_in_abs.tsv'
+    'Test_uk_abs_in_abs.tsv',
+    'Train_casehold.tsv',
+    'Train_ledgar.tsv',
+    'Train_multi_eurlex.tsv',
+    'Train_multi_lexsum.tsv',
+    'Train_privacy_qa.tsv',
+    'Train_scotus.tsv',
+    'Train_uk_abs_in_abs.tsv'
 ]
 
 final_results = dict()
@@ -50,5 +57,5 @@ for data_file in data_files:
 
     final_results[data_file] = counts_dict
     print(final_results[data_file])
-with open("filtered_file_wise_counts_test.json", "w") as file:
+with open("filtered_file_wise_counts.json", "w") as file:
     json.dump(final_results, file)

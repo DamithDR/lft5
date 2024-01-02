@@ -1,7 +1,7 @@
-python -m prompts.preprocess_prompts
+python -m prompts.preprocess_prompts --word_limit 1024
 
 python -m experiments.instruction_finetune --model_name tiiuae/falcon-7b-instruct --dataset_file_name Train_ledgar.tsv
 
-python -m experiments.inference --model_name LegalLLMs/falcon-7b-privacy_qa --batch_size 500
+python -m experiments.inference --model_name LegalLLMs/falcon-7b-privacy_qa --batch_size 128
 
 # look for files in "prompts/raw" to use for dataset_file_name param, multiple files supported.
