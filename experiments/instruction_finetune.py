@@ -10,7 +10,11 @@ from peft import LoraConfig, get_peft_model
 from peft import prepare_model_for_kbit_training
 
 import os
+
+from config.lora_setting import CONFIG
+
 os.environ["PYTORCH_CUDA_ALLOC_CONF"] = "max_split_size_mb:512"
+
 
 def tokenize_inputs(text_input):
     tok_full_prompt = tokenizer(text_input, padding=True, truncation=False)
@@ -63,7 +67,11 @@ def run(args):
         offload_folder="offload", offload_state_dict=True,
         trust_remote_code=True,
     )
-    tokenizer.pad_token = tokenizer.eos_token
+    tokenizer.unk_token = '<unk>'
+    tokenizer.pad_token = '<pad>'
+    tokenizer.eos_token = '</s>'
+    model.resize_token_embeddings(len(tokenizer))
+
     data = data.map(tokenize_prompt)
 
     model = prepare_model_for_kbit_training(model, use_gradient_checkpointing=False)
@@ -71,7 +79,7 @@ def run(args):
     config = LoraConfig(
         r=16,
         lora_alpha=32,
-        target_modules=["query_key_value"],
+        target_modules=CONFIG[args.model_type],
         lora_dropout=0.05,
         bias="none",
         task_type="CAUSAL_LM"
@@ -113,12 +121,14 @@ def run(args):
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(
         description='''evaluates models on legal instruction finetuning''')
+    parser.add_argument('--model_type', type=str, required=True, help='model_type')
     parser.add_argument('--model_name', type=str, required=True, help='model_name')
     parser.add_argument('--dataset_file_name', type=str, required=True, help='comma separated dataset file names ')
     # parser.add_argument('--max_mem', type=str, required=True, help='max memory consumption per device')
     args = parser.parse_args()
 
     tokenizer = AutoTokenizer.from_pretrained(args.model_name)
+
     tokenizer.padding_side = "left"
     data_path = ''
     run(args)

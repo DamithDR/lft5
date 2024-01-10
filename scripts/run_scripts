@@ -1,6 +1,6 @@
 python -m prompts.preprocess_prompts --word_limit 1024
 
-python -m experiments.instruction_finetune --model_name tiiuae/falcon-7b-instruct --dataset_file_name Train_ledgar.tsv
+python -m experiments.instruction_finetune --model_type falcon --model_name tiiuae/falcon-7b-instruct --dataset_file_name Train_ledgar.tsv
 
 python -m experiments.inference --model_name LegalLLMs/falcon-7b-privacy_qa --batch_size 128
 
