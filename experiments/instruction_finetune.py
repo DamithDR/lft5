@@ -51,7 +51,7 @@ def run(args):
             dataset = pd.concat([dataset, d_set], axis=0)
     else:
         dataset = pd.read_csv(f'data/permuted_data/{args.dataset_file_name}', sep='\t')
-    data = Dataset.from_pandas(dataset[['instructions']][:100])
+    data = Dataset.from_pandas(dataset[['instructions']][:1000])
 
     bnb_config = BitsAndBytesConfig(
         load_in_4bit=True,
@@ -68,10 +68,10 @@ def run(args):
         offload_folder="offload", offload_state_dict=True,
         trust_remote_code=True,
     )
-    tokenizer.unk_token = '<unk>'
+    # tokenizer.unk_token = '<unk>'
     tokenizer.pad_token = '<pad>'
-    tokenizer.eos_token = '</s>'
-    model.resize_token_embeddings(len(tokenizer))
+    # tokenizer.eos_token = '</s>'
+    # model.resize_token_embeddings(len(tokenizer))
 
     data = data.map(tokenize_prompt)
 
