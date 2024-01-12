@@ -90,13 +90,15 @@ def run(args):
 
     training_args = transformers.TrainingArguments(
         gradient_accumulation_steps=4,
+        auto_find_batch_size=True,
+        per_device_train_batch_size=args.batch_size,
         num_train_epochs=3,
         learning_rate=2e-4,
         fp16=True,
         save_total_limit=4,
         logging_steps=25,
         output_dir="output_dir",  # give the location where you want to store checkpoints
-        save_strategy='epoch',
+        save_strategy='steps',
         optim="paged_adamw_8bit",
         lr_scheduler_type='cosine',
         warmup_ratio=0.05,
@@ -108,14 +110,6 @@ def run(args):
         train_dataset=data,
         args=training_args,
         data_collator=transformers.DataCollatorForLanguageModeling(tokenizer, mlm=False),
-        learning_rate=args.learning_rate,
-        per_device_train_batch_size=args.batch_size,
-        auto_find_batch_size=True,
-        fp16=True,
-        logging_steps=10,
-        optim="adamw_torch",
-        save_strategy="steps",
-        save_total_limit=3,
     )
 
     model.config.use_cache = False  # silence the warnings. Please re-enable for inference!
