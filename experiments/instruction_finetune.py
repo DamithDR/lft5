@@ -68,10 +68,7 @@ def run(args):
         offload_folder="offload", offload_state_dict=True,
         trust_remote_code=True,
     )
-    # tokenizer.unk_token = '<unk>'
-    tokenizer.pad_token = '<pad>'
-    # tokenizer.eos_token = '</s>'
-    # model.resize_token_embeddings(len(tokenizer))
+    tokenizer.pad_token = tokenizer.eos_token
 
     data = data.map(tokenize_prompt)
 
