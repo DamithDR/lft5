@@ -14,8 +14,8 @@ import os
 from config.lora_setting import CONFIG
 
 # os.environ["PYTORCH_CUDA_ALLOC_CONF"] = "max_split_size_mb:512"
-os.environ["CUDA_VISIBLE_DEVICES"]="1,2"
-os.environ['CUDA_LAUNCH_BLOCKING']="1"
+os.environ["CUDA_VISIBLE_DEVICES"] = "1,2"
+os.environ['CUDA_LAUNCH_BLOCKING'] = "1"
 
 
 def tokenize_inputs(text_input):
@@ -71,7 +71,7 @@ def run(args):
     )
     tokenizer.pad_token = tokenizer.eos_token
 
-    data = data.map(tokenize_prompt)
+    data = data.map(tokenize_prompt, batch_size=64)
 
     model = prepare_model_for_kbit_training(model, use_gradient_checkpointing=False)
 
