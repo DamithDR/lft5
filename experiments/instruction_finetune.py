@@ -13,6 +13,7 @@ import os
 
 from config.lora_setting import CONFIG
 
+
 # os.environ["PYTORCH_CUDA_ALLOC_CONF"] = "max_split_size_mb:512"
 # os.environ["CUDA_VISIBLE_DEVICES"] = "1,2"
 # os.environ['CUDA_LAUNCH_BLOCKING'] = "1"
@@ -111,8 +112,8 @@ def run(args):
         fp16=True,
         logging_steps=10,
         optim="adamw_torch",
-        evaluation_strategy="steps" if val_set_size > 0 else "no",
         save_strategy="steps",
+        save_total_limit=3,
     )
 
     model.config.use_cache = False  # silence the warnings. Please re-enable for inference!
