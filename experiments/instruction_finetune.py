@@ -93,7 +93,7 @@ def run(args):
         auto_find_batch_size=True,
         per_device_train_batch_size=args.batch_size,
         num_train_epochs=3,
-        learning_rate=2e-4,
+        learning_rate=3e-4,
         fp16=True,
         save_total_limit=4,
         logging_steps=25,
@@ -126,10 +126,8 @@ if __name__ == '__main__':
     parser.add_argument('--model_type', type=str, required=True, help='model_type')
     parser.add_argument('--model_name', type=str, required=True, help='model_name')
     parser.add_argument('--dataset_file_name', type=str, required=True, help='comma separated dataset file names ')
-    parser.add_argument('--batch_size', type=int, required=False, default=128,
+    parser.add_argument('--batch_size', type=int, required=False, default=256,
                         help='training batch size')
-    parser.add_argument('--learning_rate', type=float, default=3e-4, required=False,
-                        help='learning rate')
     # parser.add_argument('--max_mem', type=str, required=True, help='max memory consumption per device')
     args = parser.parse_args()
 
