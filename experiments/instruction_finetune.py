@@ -14,7 +14,8 @@ import os
 from config.lora_setting import CONFIG
 
 # os.environ["PYTORCH_CUDA_ALLOC_CONF"] = "max_split_size_mb:512"
-os.environ["CUDA_VISIBLE_DEVICES"] = "0"
+os.environ["CUDA_VISIBLE_DEVICES"]="1,2"
+os.environ['CUDA_LAUNCH_BLOCKING']="1"
 
 
 def tokenize_inputs(text_input):
