@@ -1,5 +1,6 @@
 import argparse
 
+import pandas as pd
 from datasets import load_dataset
 
 parser = argparse.ArgumentParser(description='''convert dataset''')
@@ -8,11 +9,16 @@ args = parser.parse_args()
 
 config = 'en_all'
 if args.cache_dir:
-    dataset = load_dataset('joelito/Multi_Legal_Pile', config, split='train', cache_dir=args.cache_dir)
+    dataset = load_dataset('joelito/Multi_Legal_Pile', config, split='train', cache_dir=args.cache_dir, streaming=True)
 else:
-    dataset = load_dataset('joelito/Multi_Legal_Pile', config, split='train')
-df = dataset.to_pandas()
+    dataset = load_dataset('joelito/Multi_Legal_Pile', config, split='train', streaming=True)
 
-df['word_count'] = df['text'].apply(lambda x: len(x.split(' ')))
-df = df.drop(df[df['word_count'] > 1024].index)
+filtered_list = []
+
+for data in dataset:
+    if len(data['text'].split(" ")) <= 1024:
+        filtered_list.append(data['text'])
+
+df = pd.DataFrame()
+df['text'] = filtered_list
 df.to_csv('en_all_filtered_1024.tsv', sep='\t', index=False)
