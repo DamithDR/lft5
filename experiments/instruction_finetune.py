@@ -53,7 +53,7 @@ def run(args):
             dataset = pd.concat([dataset, d_set], axis=0)
     else:
         dataset = pd.read_csv(f'data/permuted_data/{args.dataset_file_name}', sep='\t')
-    data = Dataset.from_pandas(dataset[['instructions']][:1000])
+    data = Dataset.from_pandas(dataset[['instructions']])
 
     bnb_config = BitsAndBytesConfig(
         load_in_4bit=True,
