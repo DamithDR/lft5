@@ -4,14 +4,15 @@ import pandas as pd
 from datasets import load_dataset
 
 parser = argparse.ArgumentParser(description='''convert dataset''')
-parser.add_argument('--cache_dir', type=str, required=False, help='model_name')
+parser.add_argument('--cache_dir', type=str, default='/experiments/dpremasiri/cache/', required=False,
+                    help='model_name')
 args = parser.parse_args()
 
 config = 'en_all'
 if args.cache_dir:
     dataset = load_dataset('joelito/Multi_Legal_Pile', config, split='train', cache_dir=args.cache_dir, streaming=True)
 else:
-    dataset = load_dataset('joelito/Multi_Legal_Pile', config, split='train', streaming=True)
+    dataset = load_dataset('joelito/Multi_Legal_Pile', config, split='train', cache_dir=args.cache_dir, streaming=True)
 
 filtered_list = []
 part_number = 1
