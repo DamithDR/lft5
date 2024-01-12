@@ -53,7 +53,7 @@ def run(args):
             dataset = pd.concat([dataset, d_set], axis=0)
     else:
         dataset = pd.read_csv(f'data/permuted_data/{args.dataset_file_name}', sep='\t')
-    data = Dataset.from_pandas(dataset[['instructions']])
+    data = Dataset.from_pandas(dataset[['instructions']][:1000])
 
     bnb_config = BitsAndBytesConfig(
         load_in_4bit=True,
@@ -109,6 +109,8 @@ def run(args):
         args=training_args,
         data_collator=transformers.DataCollatorForLanguageModeling(tokenizer, mlm=False),
         learning_rate=args.learning_rate,
+        per_device_train_batch_size=args.batch_size,
+        auto_find_batch_size=True,
         fp16=True,
         logging_steps=10,
         optim="adamw_torch",
