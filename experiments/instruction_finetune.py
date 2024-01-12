@@ -14,8 +14,8 @@ import os
 from config.lora_setting import CONFIG
 
 # os.environ["PYTORCH_CUDA_ALLOC_CONF"] = "max_split_size_mb:512"
-os.environ["CUDA_VISIBLE_DEVICES"] = "1,2"
-os.environ['CUDA_LAUNCH_BLOCKING'] = "1"
+# os.environ["CUDA_VISIBLE_DEVICES"] = "1,2"
+# os.environ['CUDA_LAUNCH_BLOCKING'] = "1"
 
 
 def tokenize_inputs(text_input):
@@ -52,7 +52,7 @@ def run(args):
             dataset = pd.concat([dataset, d_set], axis=0)
     else:
         dataset = pd.read_csv(f'data/permuted_data/{args.dataset_file_name}', sep='\t')
-    data = Dataset.from_pandas(dataset[['instructions']][:1000])
+    data = Dataset.from_pandas(dataset[['instructions']])
 
     bnb_config = BitsAndBytesConfig(
         load_in_4bit=True,
@@ -65,19 +65,19 @@ def run(args):
         args.model_name,
         quantization_config=bnb_config,
         device_map="auto",
-        max_memory={0: "20GIB", 1: "20GIB"},
+        # max_memory={0: "20GIB", 1: "20GIB"},
         offload_folder="offload", offload_state_dict=True,
         trust_remote_code=True,
     )
     tokenizer.pad_token = tokenizer.eos_token
 
-    data = data.map(tokenize_prompt, batch_size=64)
+    data = data.map(tokenize_prompt, batch_size=args.batch_size)
 
     model = prepare_model_for_kbit_training(model, use_gradient_checkpointing=False)
 
     config = LoraConfig(
-        r=16,
-        lora_alpha=32,
+        r=8,
+        lora_alpha=16,
         target_modules=CONFIG[args.model_type],
         lora_dropout=0.05,
         bias="none",
@@ -107,6 +107,12 @@ def run(args):
         train_dataset=data,
         args=training_args,
         data_collator=transformers.DataCollatorForLanguageModeling(tokenizer, mlm=False),
+        learning_rate=args.learning_rate,
+        fp16=True,
+        logging_steps=10,
+        optim="adamw_torch",
+        evaluation_strategy="steps" if val_set_size > 0 else "no",
+        save_strategy="steps",
     )
 
     model.config.use_cache = False  # silence the warnings. Please re-enable for inference!
@@ -123,6 +129,10 @@ if __name__ == '__main__':
     parser.add_argument('--model_type', type=str, required=True, help='model_type')
     parser.add_argument('--model_name', type=str, required=True, help='model_name')
     parser.add_argument('--dataset_file_name', type=str, required=True, help='comma separated dataset file names ')
+    parser.add_argument('--batch_size', type=int, required=False, default=128,
+                        help='training batch size')
+    parser.add_argument('--learning_rate', type=float, default=3e-4, required=False,
+                        help='learning rate')
     # parser.add_argument('--max_mem', type=str, required=True, help='max memory consumption per device')
     args = parser.parse_args()
 
