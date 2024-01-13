@@ -31,4 +31,9 @@ for data in dataset:
         print(f'processing part number : {part_number} | count number : {count}')
     else:
         removed += 1
+df = pd.DataFrame()
+df['text'] = filtered_list
+df.to_csv(f'en_all_filtered_1024_part_{part_number}.tsv', sep='\t', index=False)
 print(f'used count {count} | removed count {removed}')
+
+# used count 8377505 | removed count 9859559
