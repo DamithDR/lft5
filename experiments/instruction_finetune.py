@@ -90,7 +90,7 @@ def run(args):
 
     training_args = transformers.TrainingArguments(
         gradient_accumulation_steps=4,
-        auto_find_batch_size=True,
+        # auto_find_batch_size=True,
         per_device_train_batch_size=args.batch_size,
         num_train_epochs=3,
         learning_rate=3e-4,
