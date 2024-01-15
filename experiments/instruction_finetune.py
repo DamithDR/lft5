@@ -13,7 +13,6 @@ import os
 
 from config.lora_setting import CONFIG
 
-
 # os.environ["PYTORCH_CUDA_ALLOC_CONF"] = "max_split_size_mb:512"
 os.environ["CUDA_VISIBLE_DEVICES"] = "1,2"
 os.environ['CUDA_LAUNCH_BLOCKING'] = "1"
@@ -69,6 +68,7 @@ def run(args):
         max_memory={0: "20GIB", 1: "20GIB"},
         offload_folder="offload", offload_state_dict=True,
         trust_remote_code=True,
+        cache_dir=args.cache_dir if args.cache_dir else None
     )
     tokenizer.pad_token = tokenizer.eos_token
 
@@ -126,6 +126,7 @@ if __name__ == '__main__':
     parser.add_argument('--model_type', type=str, required=True, help='model_type')
     parser.add_argument('--model_name', type=str, required=True, help='model_name')
     parser.add_argument('--dataset_file_name', type=str, required=True, help='comma separated dataset file names ')
+    parser.add_argument('--cache_dir', type=str, required=False, help='cache directory')
     parser.add_argument('--batch_size', type=int, required=False, default=256,
                         help='training batch size')
     # parser.add_argument('--max_mem', type=str, required=True, help='max memory consumption per device')
