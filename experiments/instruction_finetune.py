@@ -15,8 +15,8 @@ from config.lora_setting import CONFIG
 
 
 # os.environ["PYTORCH_CUDA_ALLOC_CONF"] = "max_split_size_mb:512"
-# os.environ["CUDA_VISIBLE_DEVICES"] = "1,2"
-# os.environ['CUDA_LAUNCH_BLOCKING'] = "1"
+os.environ["CUDA_VISIBLE_DEVICES"] = "1,2"
+os.environ['CUDA_LAUNCH_BLOCKING'] = "1"
 
 
 def tokenize_inputs(text_input):
@@ -66,7 +66,7 @@ def run(args):
         args.model_name,
         quantization_config=bnb_config,
         device_map="auto",
-        # max_memory={0: "20GIB", 1: "20GIB"},
+        max_memory={0: "20GIB", 1: "20GIB"},
         offload_folder="offload", offload_state_dict=True,
         trust_remote_code=True,
     )
@@ -114,8 +114,8 @@ def run(args):
 
     model.config.use_cache = False  # silence the warnings. Please re-enable for inference!
     trainer.train()
-    model.save_pretrained(f'finetuned_{str(args.model_name).replace("/", "_")}_{",".join(data_files)}')
-    with open(f'finetuned_{str(args.model_name).replace("/", "_")}_{",".join(data_files)}/stat.txt', 'w') as f:
+    model.save_pretrained(f'finetuned_{str(args.model_name).replace("/", "_")}')
+    with open(f'finetuned_{str(args.model_name).replace("/", "_")}/stat.txt', 'w') as f:
         f.write(f'Data files used : {",".join(data_files)}\n')
         f.write(f'model used : {args.model_name}')
 
