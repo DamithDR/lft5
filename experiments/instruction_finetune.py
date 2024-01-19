@@ -73,15 +73,7 @@ def run(args):
     )
     tokenizer.pad_token = tokenizer.eos_token
 
-    if os.path.isfile('data.pkl'):
-        with open('data.pkl', 'rb') as f:
-            data = pickle.load(f)
-    else:
-        data = data.map(tokenize_prompt, batch_size=args.batch_size)
-        result_list = list(data)
-
-        with open('data.pkl', 'wb') as f:
-            pickle.dump(result_list, f)
+    data = data.map(tokenize_prompt, batch_size=args.batch_size)
 
     model = prepare_model_for_kbit_training(model, use_gradient_checkpointing=False)
 
