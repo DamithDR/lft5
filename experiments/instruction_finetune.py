@@ -64,7 +64,9 @@ def run(args):
 
     model = AutoModelForCausalLM.from_pretrained(
         args.model_name,
-        quantization_config=bnb_config,
+        load_in_8bit=True,
+        torch_dtype=torch.float16,
+        # quantization_config=bnb_config,
         device_map="auto",
         max_memory={0: "20GIB", 1: "20GIB"},
         offload_folder="offload", offload_state_dict=True,
