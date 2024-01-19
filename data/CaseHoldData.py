@@ -20,17 +20,11 @@ class CaseHoldData(DataClass):
                                                                       df['label'],
                                                                       ):
             if not math.isnan(int(correct_ans)):
-                options = f"""
-                    1. {ans0}\n
-                    2. {ans1}\n
-                    3. {ans2}\n
-                    4. {ans3}\n
-                    5. {ans4}
-                    """
+                options = f"""1. {ans0.strip()}\n2. {ans1.strip()}\n3. {ans2.strip()}\n4. {ans3.strip()}\n5. {ans4.strip()}"""
                 if omit_ans:
                     answer = ''
                 else:
-                    ans_list = [ans0, ans1, ans2, ans3, ans4]
+                    ans_list = [ans0.strip(), ans1.strip(), ans2.strip(), ans3.strip(), ans4.strip()]
                     answer = ans_list[int(correct_ans)]
 
                 full_input = self.generate_prompt(prompt=prompt, context=context, options=options, answer=answer)
@@ -47,19 +41,13 @@ class CaseHoldData(DataClass):
             self.test_input_df[self.test_input_df['word_count'] > self.word_limit].index)
 
     def flattern_text(self):
-        self.input_df['concatenated'] = self.input_df['citing_prompt'].str.cat(self.input_df['holding_0'], sep=' ')
-        self.input_df['concatenated'] = self.input_df['concatenated'].str.cat(self.input_df['holding_1'], sep=' ')
-        self.input_df['concatenated'] = self.input_df['concatenated'].str.cat(self.input_df['holding_2'], sep=' ')
-        self.input_df['concatenated'] = self.input_df['concatenated'].str.cat(self.input_df['holding_3'], sep=' ')
-        self.input_df['concatenated'] = self.input_df['concatenated'].str.cat(self.input_df['holding_4'], sep=' ')
+        self.input_df['concatenated'] = self.input_df['citing_prompt'] + self.input_df['holding_0'] \
+                                        + self.input_df['holding_1'] + self.input_df['holding_2'] + self.input_df[
+                                            'holding_3'] + self.input_df['holding_4'] + \
+                                        self.input_df['label']
 
-        self.test_input_df['concatenated'] = self.test_input_df['citing_prompt'].str.cat(
-            self.test_input_df['holding_0'], sep=' ')
-        self.test_input_df['concatenated'] = self.test_input_df['concatenated'].str.cat(self.test_input_df['holding_1'],
-                                                                                        sep=' ')
-        self.test_input_df['concatenated'] = self.test_input_df['concatenated'].str.cat(self.test_input_df['holding_2'],
-                                                                                        sep=' ')
-        self.test_input_df['concatenated'] = self.test_input_df['concatenated'].str.cat(self.test_input_df['holding_3'],
-                                                                                        sep=' ')
-        self.test_input_df['concatenated'] = self.test_input_df['concatenated'].str.cat(self.test_input_df['holding_4'],
-                                                                                        sep=' ')
+        self.test_input_df['concatenated'] = self.test_input_df['citing_prompt'] + self.test_input_df['holding_0'] + \
+                                             self.test_input_df[
+                                                 'holding_1'] + self.test_input_df['holding_2'] + self.test_input_df[
+                                                 'holding_3'] + self.test_input_df['holding_4'] + \
+                                             self.test_input_df['label']

@@ -17,8 +17,8 @@ class UK_INabsData(DataClass):
         return permutations
 
     def filter_dataset(self):
-
-        self.input_df['word_count'] = self.input_df['judgement'].apply(lambda x: len(x.split(' ')))
+        concat = self.input_df['judgement'] + self.input_df['summary']
+        self.input_df['word_count'] = concat.apply(lambda x: len(x.split(' ')))
         self.test_input_df['word_count'] = self.test_input_df['judgement'].apply(lambda x: len(x.split(' ')))
 
         self.input_df = self.input_df.drop(self.input_df[self.input_df['word_count'] > self.word_limit].index)

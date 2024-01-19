@@ -21,6 +21,7 @@ data_files = [
 
 final_results = dict()
 
+word_count_list = []
 for data_file in data_files:
     counts_dict = {
         "< 512": 0,
@@ -34,14 +35,20 @@ for data_file in data_files:
         "65536 <": 0
     }
     d_set = pd.read_csv(f'data/permuted_data/{data_file}', sep='\t')
+    # d_set = pd.read_csv(f'D:/DataSets/legalfinetune/{data_file}', sep='\t')
     for row in d_set['instructions']:
         no_of_words = len(row.split(' '))
+        word_count_list.append(no_of_words)
         if no_of_words <= 512:
             counts_dict["< 512"] += 1
         elif 512 < no_of_words <= 1024:
             counts_dict["512 - 1024"] += 1
         elif 1024 < no_of_words <= 2048:
             counts_dict["1024 - 2048"] += 1
+            # print(f'{no_of_words} > {data_file}')
+            print(no_of_words)
+            # if no_of_words > 1100:
+            #     print(row)
         elif 2048 < no_of_words <= 4096:
             counts_dict["2048 - 4096"] += 1
         elif 4096 < no_of_words <= 8192:
@@ -57,5 +64,6 @@ for data_file in data_files:
 
     final_results[data_file] = counts_dict
     print(final_results[data_file])
+counts = sorted(word_count_list,reverse=True)
 with open("filtered_file_wise_counts.json", "w") as file:
     json.dump(final_results, file)
