@@ -56,7 +56,7 @@ def run(args):
 
     dataset['word_count'] = dataset['instructions'].apply(lambda x: len(x.split(' ')))
     dataset = dataset.drop(dataset[dataset['word_count'] > args.word_limit].index)
-
+    print('word limit filter finished')
     data = Dataset.from_pandas(dataset[['instructions']])
 
     bnb_config = BitsAndBytesConfig(
