@@ -15,8 +15,8 @@ import os
 from config.lora_setting import CONFIG
 
 # os.environ["PYTORCH_CUDA_ALLOC_CONF"] = "max_split_size_mb:512"
-os.environ["CUDA_VISIBLE_DEVICES"] = "1,2"
-os.environ['CUDA_LAUNCH_BLOCKING'] = "1"
+# os.environ["CUDA_VISIBLE_DEVICES"] = "1,2"
+# os.environ['CUDA_LAUNCH_BLOCKING'] = "1"
 
 
 def tokenize_inputs(text_input):
@@ -53,6 +53,10 @@ def run(args):
             dataset = pd.concat([dataset, d_set], axis=0)
     else:
         dataset = pd.read_csv(f'data/permuted_data/{args.dataset_file_name}', sep='\t')
+
+    dataset['word_count'] = dataset['instructions'].apply(lambda x: len(x.split(' ')))
+    dataset = dataset.drop(dataset[dataset['word_count'] > args.word_limit].index)
+
     data = Dataset.from_pandas(dataset[['instructions']])
 
     bnb_config = BitsAndBytesConfig(
@@ -68,22 +72,23 @@ def run(args):
         torch_dtype=torch.float16,
         # quantization_config=bnb_config,
         device_map="auto",
-        max_memory={0: "20GIB", 1: "20GIB"},
+        # max_memory={0: "20GIB", 1: "20GIB"},
         offload_folder="offload", offload_state_dict=True,
         trust_remote_code=True,
         cache_dir=args.cache_dir if args.cache_dir else None
     )
     tokenizer.pad_token = tokenizer.eos_token
 
-    if os.path.isfile('data.pkl'):
-        with open('data.pkl', 'rb') as f:
-            data = pickle.load(f)
-    else:
-        data = data.map(tokenize_prompt, batch_size=args.batch_size)
-        result_list = list(data)
-
-        with open('data.pkl', 'wb') as f:
-            pickle.dump(result_list, f)
+    data = data.map(tokenize_prompt, batch_size=args.batch_size)
+    # if os.path.isfile('data.pkl'):
+    #     with open('data.pkl', 'rb') as f:
+    #         data = pickle.load(f)
+    # else:
+    #     data = data.map(tokenize_prompt, batch_size=args.batch_size)
+    #     result_list = list(data)
+    #
+    #     with open('data.pkl', 'wb') as f:
+    #         pickle.dump(result_list, f)
 
     model = prepare_model_for_kbit_training(model, use_gradient_checkpointing=False)
 
@@ -138,6 +143,7 @@ if __name__ == '__main__':
     parser.add_argument('--model_name', type=str, required=True, help='model_name')
     parser.add_argument('--dataset_file_name', type=str, required=True, help='comma separated dataset file names ')
     parser.add_argument('--cache_dir', type=str, required=False, help='cache directory')
+    parser.add_argument('--word_limit', type=int, required=False, help='word limit')
     parser.add_argument('--batch_size', type=int, required=False, default=256,
                         help='training batch size')
     # parser.add_argument('--max_mem', type=str, required=True, help='max memory consumption per device')
