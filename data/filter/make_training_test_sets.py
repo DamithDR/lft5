@@ -2,7 +2,7 @@ import pandas as pd
 from sklearn.model_selection import train_test_split
 
 files_list = [f'en_all_filtered_1024_part_{i}.tsv' for i in range(1, 18)]
-dataframes = [pd.read_csv(f'/experiments/dpremasiri/transformers/examples/flax/language-modeling/data_files/{file}', sep='\t') for file in files_list]
+dataframes = [pd.read_csv(f'output_files/{file}', sep='\t') for file in files_list]
 df = pd.concat(dataframes, ignore_index=True)
 df = df.dropna(how='all')
 
