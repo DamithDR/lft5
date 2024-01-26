@@ -37,5 +37,6 @@ df.to_csv(f'en_all_filtered_1024_part_{part_number}.tsv', sep='\t', index=False)
 print(f'used count {count} | removed count {removed}')
 
 # used count 8377505 | removed count 9859559 - missed last part
-# used count 8377505 | removed count 9859559
+# used count 8377505 | removed count 9859559 - add them together to get total
+
 
