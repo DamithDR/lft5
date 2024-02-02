@@ -43,7 +43,7 @@ def run(args):
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(description='''preprocess prompts''')
     parser.add_argument('--word_limit', type=int, required=False, help='word_limit')
-    parser.add_argument('--tokeniser', type=int, required=True, help='the namer of the tokeniser')
+    parser.add_argument('--tokeniser', type=str, required=True, help='the namer of the tokeniser')
     args = parser.parse_args()
     if args.word_limit:
         config.word_limit.CONFIG['value'] = args.word_limit
