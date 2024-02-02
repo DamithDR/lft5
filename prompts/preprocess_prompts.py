@@ -29,11 +29,11 @@ file_map = {
 }
 
 
-def run():
+def run(args):
     for file in prompt_files:
         data_class, data_file = file_map.get(file)
         prompt_data = pd.read_csv(f'{base_path}/{file}', sep='\t')
-        data_class = data_class(data_source=data_file, prompts=prompt_data['Prompt'])
+        data_class = data_class(data_source=data_file, prompts=prompt_data['Prompt'], tokenizer_name=args.tokeniser)
 
         train, test = data_class.generate_permutations()
         train.to_csv(f'data/permuted_data/Train_{file}', sep='\t', index=False)
@@ -47,4 +47,4 @@ if __name__ == '__main__':
     args = parser.parse_args()
     if args.word_limit:
         config.word_limit.CONFIG['value'] = args.word_limit
-    run()
+    run(args)

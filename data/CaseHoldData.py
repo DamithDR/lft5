@@ -7,9 +7,9 @@ from data.DataClass import DataClass
 
 class CaseHoldData(DataClass):
 
-    def __init__(self, data_source, prompts, tokenizer):
+    def __init__(self, data_source, prompts, tokenizer_name):
         super().__init__(data_source=data_source, prompts=prompts, context_alias='{case}', options_alias='{answers}',
-                         tokenizer_name=tokenizer)
+                         tokenizer_name=tokenizer_name)
         self.filter_dataset()
 
     def permute(self, prompt, df, omit_ans=False):

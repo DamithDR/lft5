@@ -3,9 +3,9 @@ from data.datafiles.ledgar_categories import LEDGAR_CATEGORIES
 
 
 class LedgarData(DataClass):
-    def __init__(self, data_source, prompts, tokenizer):
+    def __init__(self, data_source, prompts, tokenizer_name):
         super().__init__(data_source, prompts, data_config="ledgar", context_alias='<provision>',
-                         tokenizer_name=tokenizer)
+                         tokenizer_name=tokenizer_name)
         self.ledgar_categories = LEDGAR_CATEGORIES
         self.filter_dataset()
 

@@ -7,9 +7,9 @@ from data.DataClass import DataClass
 
 class MultiEURLEXData(DataClass):
 
-    def __init__(self, data_source, prompts, tokenizer):
+    def __init__(self, data_source, prompts, tokenizer_name):
         super().__init__(data_source=data_source, data_config='en', prompts=prompts, context_alias='<law>',
-                         tokenizer_name=tokenizer)
+                         tokenizer_name=tokenizer_name)
         self.dataset = load_dataset(self.data_source, self.data_config, split='train')
         self.classlabel = self.dataset.features["labels"].feature
         with open('data/datafiles/eurovoc_descriptors.json') as jsonl_file:

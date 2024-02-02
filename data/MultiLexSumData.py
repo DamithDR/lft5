@@ -3,9 +3,9 @@ from data.DataClass import DataClass
 
 class MultiLexSumData(DataClass):
 
-    def __init__(self, data_source, prompts, tokenizer):
+    def __init__(self, data_source, prompts, tokenizer_name):
         super().__init__(data_source, prompts, data_config='v20220616', context_alias='{case}',
-                         tokenizer_name=tokenizer)
+                         tokenizer_name=tokenizer_name)
         self.filter_dataset()
 
     def permute(self, prompt, df, omit_ans=False):

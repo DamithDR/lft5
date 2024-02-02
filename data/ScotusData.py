@@ -4,9 +4,9 @@ from data.datafiles.scotus_categories import categories
 
 class ScotusData(DataClass):
 
-    def __init__(self, data_source, prompts, tokenizer):
+    def __init__(self, data_source, prompts, tokenizer_name):
         super().__init__(data_source, prompts, data_config="scotus", context_alias='{opinion}',
-                         tokenizer_name=tokenizer)
+                         tokenizer_name=tokenizer_name)
         self.scotus_categories = categories
         self.filter_dataset()
 
