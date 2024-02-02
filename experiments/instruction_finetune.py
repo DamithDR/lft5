@@ -54,9 +54,6 @@ def run(args):
     else:
         dataset = pd.read_csv(f'data/permuted_data/{args.dataset_file_name}', sep='\t')
 
-    dataset['word_count'] = dataset['instructions'].apply(lambda x: len(x.split(' ')))
-    dataset = dataset.drop(dataset[dataset['word_count'] > args.word_limit].index)
-    print('word limit filter finished')
     data = Dataset.from_pandas(dataset[['instructions']])
 
     bnb_config = BitsAndBytesConfig(
