@@ -1,4 +1,4 @@
-python -m prompts.preprocess_prompts --word_limit 1024
+python -m prompts.preprocess_prompts --word_limit 1024 --tokeniser tiiuae/falcon-7b-instruct
 
 python -m experiments.instruction_finetune --model_type falcon --word_limit 1024 --model_name tiiuae/falcon-7b-instruct --batch_size 128 --cache_dir ../cache/ --dataset_file_name Train_casehold.tsv,Train_ledgar.tsv,Train_multi_eurlex.tsv,Train_multi_lexsum.tsv,Train_privacy_qa.tsv,Train_scotus.tsv,Train_uk_abs_in_abs.tsv
 
