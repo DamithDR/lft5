@@ -4,8 +4,9 @@ from data.datafiles.scotus_categories import categories
 
 class ScotusData(DataClass):
 
-    def __init__(self, data_source, prompts):
-        super().__init__(data_source, prompts, data_config="scotus", context_alias='{opinion}')
+    def __init__(self, data_source, prompts, tokenizer):
+        super().__init__(data_source, prompts, data_config="scotus", context_alias='{opinion}',
+                         tokenizer_name=tokenizer)
         self.scotus_categories = categories
         self.filter_dataset()
 
@@ -20,4 +21,3 @@ class ScotusData(DataClass):
                                               answer=answer)
             permutations.append(full_input)
         return permutations
-

@@ -1,12 +1,15 @@
 import math
 
+from transformers import AutoTokenizer
+
 from data.DataClass import DataClass
 
 
 class CaseHoldData(DataClass):
 
-    def __init__(self, data_source, prompts):
-        super().__init__(data_source=data_source, prompts=prompts, context_alias='{case}', options_alias='{answers}')
+    def __init__(self, data_source, prompts, tokenizer):
+        super().__init__(data_source=data_source, prompts=prompts, context_alias='{case}', options_alias='{answers}',
+                         tokenizer_name=tokenizer)
         self.filter_dataset()
 
     def permute(self, prompt, df, omit_ans=False):
@@ -31,7 +34,7 @@ class CaseHoldData(DataClass):
                 permutations.append(full_input)
         return permutations
 
-    def filter_dataset(self):
+    def filter_dataset_whitespace(self):
         self.flattern_text()
         self.input_df['word_count'] = self.input_df['concatenated'].apply(lambda x: len(x.split(' ')))
         self.test_input_df['word_count'] = self.test_input_df['concatenated'].apply(lambda x: len(x.split(' ')))
@@ -39,6 +42,24 @@ class CaseHoldData(DataClass):
         self.input_df = self.input_df.drop(self.input_df[self.input_df['word_count'] > self.word_limit].index)
         self.test_input_df = self.test_input_df.drop(
             self.test_input_df[self.test_input_df['word_count'] > self.word_limit].index)
+
+    def filter_dataset(self):
+        self.flattern_text()
+        if self.tokenizer_name is not None:
+
+            if len(self.input_df) > 0:
+                data = self.input_df['concatenated'].tolist()
+                tokens = self.tokenizer(data)
+                lengths = [len(token_lst) for token_lst in tokens['input_ids']]
+                self.input_df['tokens'] = lengths
+                self.input_df = self.input_df.drop(self.input_df[self.input_df['tokens'] > self.word_limit].index)
+            if len(self.test_input_df) > 0:
+                data = self.test_input_df['concatenated'].tolist()
+                tokens = self.tokenizer(data)
+                lengths = [len(token_lst) for token_lst in tokens['input_ids']]
+                self.test_input_df['tokens'] = lengths
+                self.test_input_df = self.test_input_df.drop(
+                    self.test_input_df[self.test_input_df['tokens'] > self.word_limit].index)
 
     def flattern_text(self):
         self.input_df['concatenated'] = self.input_df['citing_prompt'] + self.input_df['holding_0'] \

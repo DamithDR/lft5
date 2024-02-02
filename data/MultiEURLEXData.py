@@ -7,8 +7,9 @@ from data.DataClass import DataClass
 
 class MultiEURLEXData(DataClass):
 
-    def __init__(self, data_source, prompts, data_config='en'):
-        super().__init__(data_source=data_source, data_config=data_config, prompts=prompts, context_alias='<law>')
+    def __init__(self, data_source, prompts, tokenizer):
+        super().__init__(data_source=data_source, data_config='en', prompts=prompts, context_alias='<law>',
+                         tokenizer_name=tokenizer)
         self.dataset = load_dataset(self.data_source, self.data_config, split='train')
         self.classlabel = self.dataset.features["labels"].feature
         with open('data/datafiles/eurovoc_descriptors.json') as jsonl_file:
@@ -31,4 +32,3 @@ class MultiEURLEXData(DataClass):
                                               answer=answer)
             permutations.append(full_input)
         return permutations
-

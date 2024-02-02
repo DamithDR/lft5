@@ -3,8 +3,9 @@ from data.DataClass import DataClass
 
 class MultiLexSumData(DataClass):
 
-    def __init__(self, data_source, prompts):
-        super().__init__(data_source, prompts, data_config='v20220616', context_alias='{case}')
+    def __init__(self, data_source, prompts, tokenizer):
+        super().__init__(data_source, prompts, data_config='v20220616', context_alias='{case}',
+                         tokenizer_name=tokenizer)
         self.filter_dataset()
 
     def permute(self, prompt, df, omit_ans=False):
@@ -19,6 +20,23 @@ class MultiLexSumData(DataClass):
         return permutations
 
     def filter_dataset(self):
+        self.flattern_text()
+        if self.tokenizer_name is not None:
+            if len(self.input_df) > 0:
+                data = self.input_df['text'].tolist()
+                tokens = self.tokenizer(data)
+                lengths = [len(token_lst) for token_lst in tokens['input_ids']]
+                self.input_df['tokens'] = lengths
+                self.input_df = self.input_df.drop(self.input_df[self.input_df['tokens'] > self.word_limit].index)
+            if len(self.test_input_df) > 0:
+                data = self.test_input_df['text'].tolist()
+                tokens = self.tokenizer(data)
+                lengths = [len(token_lst) for token_lst in tokens['input_ids']]
+                self.test_input_df['tokens'] = lengths
+                self.test_input_df = self.test_input_df.drop(
+                    self.test_input_df[self.test_input_df['tokens'] > self.word_limit].index)
+
+    def filter_dataset_whitespace(self):
         self.flattern_text()
 
         self.input_df['word_count'] = self.input_df['text'].apply(lambda x: len(x.split(' ')))

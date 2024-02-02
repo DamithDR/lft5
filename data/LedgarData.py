@@ -3,8 +3,9 @@ from data.datafiles.ledgar_categories import LEDGAR_CATEGORIES
 
 
 class LedgarData(DataClass):
-    def __init__(self, data_source, prompts):
-        super().__init__(data_source, prompts, data_config="ledgar", context_alias='<provision>')
+    def __init__(self, data_source, prompts, tokenizer):
+        super().__init__(data_source, prompts, data_config="ledgar", context_alias='<provision>',
+                         tokenizer_name=tokenizer)
         self.ledgar_categories = LEDGAR_CATEGORIES
         self.filter_dataset()
 
@@ -19,4 +20,3 @@ class LedgarData(DataClass):
                                               answer=answer)
             permutations.append(full_input)
         return permutations
-
