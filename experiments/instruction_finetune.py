@@ -14,6 +14,7 @@ import os
 
 from config.lora_setting import CONFIG
 
+
 # os.environ["PYTORCH_CUDA_ALLOC_CONF"] = "max_split_size_mb:512"
 # os.environ["CUDA_VISIBLE_DEVICES"] = "1,2"
 # os.environ['CUDA_LAUNCH_BLOCKING'] = "1"
@@ -54,7 +55,10 @@ def run(args):
     else:
         dataset = pd.read_csv(f'data/permuted_data/{args.dataset_file_name}', sep='\t')
 
+    dataset, val_dataset = dataset.train_test_split(test_size=2000, shuffle=True, seed=42)
+
     data = Dataset.from_pandas(dataset[['instructions']])
+    validation_data = Dataset.from_pandas(val_dataset[['instructions']])
 
     bnb_config = BitsAndBytesConfig(
         load_in_4bit=True,
@@ -77,6 +81,7 @@ def run(args):
     tokenizer.pad_token = tokenizer.eos_token
 
     data = data.map(tokenize_prompt, batch_size=args.batch_size)
+    validation_data = validation_data.map(tokenize_prompt, batch_size=args.batch_size)
     # if os.path.isfile('data.pkl'):
     #     with open('data.pkl', 'rb') as f:
     #         data = pickle.load(f)
@@ -125,6 +130,7 @@ def run(args):
     trainer = transformers.Trainer(
         model=model,
         train_dataset=data,
+        eval_dataset=validation_data,
         args=training_args,
         data_collator=transformers.DataCollatorForLanguageModeling(tokenizer, mlm=False),
     )
