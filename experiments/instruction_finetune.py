@@ -108,6 +108,10 @@ def run(args):
         num_train_epochs=3,
         learning_rate=3e-4,
         fp16=True,
+        evaluation_strategy="steps",
+        eval_steps=50,
+        save_steps=50,
+        load_best_model_at_end=True,
         save_total_limit=4,
         logging_steps=25,
         output_dir="output_dir",  # give the location where you want to store checkpoints
