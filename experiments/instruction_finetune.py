@@ -55,10 +55,10 @@ def run(args):
     else:
         dataset = pd.read_csv(f'data/permuted_data/{args.dataset_file_name}', sep='\t')
 
-    dataset, val_dataset = dataset.train_test_split(test_size=2000, shuffle=True, seed=42)
-
     data = Dataset.from_pandas(dataset[['instructions']])
-    validation_data = Dataset.from_pandas(val_dataset[['instructions']])
+    splits = data.train_test_split(test_size=2000, shuffle=True, seed=42)
+    data = splits['train'].shuffle()
+    validation_data = splits["test"].shuffle()
 
     bnb_config = BitsAndBytesConfig(
         load_in_4bit=True,
