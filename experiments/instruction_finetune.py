@@ -113,7 +113,7 @@ def run(args):
         warmup_steps=100,
         num_train_epochs=3,
         learning_rate=3e-4,
-        fp16=True,
+        fp16=False,
         evaluation_strategy="steps",
         eval_steps=50,
         save_steps=50,
