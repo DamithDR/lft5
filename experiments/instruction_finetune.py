@@ -60,21 +60,21 @@ def run(args):
     data = splits['train'].shuffle()
     validation_data = splits["test"].shuffle()
 
-    bnb_config = BitsAndBytesConfig(
-        load_in_4bit=True,
-        bnb_4bit_use_double_quant=True,
-        bnb_4bit_quant_type="nf4",
-        bnb_4bit_compute_dtype=torch.bfloat16
-    )
+    # bnb_config = BitsAndBytesConfig(
+    #     load_in_4bit=True,
+    #     bnb_4bit_use_double_quant=True,
+    #     bnb_4bit_quant_type="nf4",
+    #     bnb_4bit_compute_dtype=torch.bfloat16
+    # )
 
     model = AutoModelForCausalLM.from_pretrained(
         args.model_name,
-        # load_in_8bit=True,
+        load_in_8bit=True,
         torch_dtype=torch.float16,
-        quantization_config=bnb_config,
+        # quantization_config=bnb_config,
         device_map="auto",
         # max_memory={0: "20GIB", 1: "20GIB"},
-        offload_folder="offload", offload_state_dict=True,
+        # offload_folder="offload", offload_state_dict=True,
         trust_remote_code=True,
         cache_dir=args.cache_dir if args.cache_dir else None
     )
@@ -110,6 +110,7 @@ def run(args):
         gradient_accumulation_steps=4,
         # auto_find_batch_size=True,
         per_device_train_batch_size=args.batch_size,
+        warmup_steps=100,
         num_train_epochs=3,
         learning_rate=3e-4,
         fp16=True,
