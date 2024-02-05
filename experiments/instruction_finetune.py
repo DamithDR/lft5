@@ -121,8 +121,7 @@ def run(args):
         logging_steps=25,
         output_dir="output_dir",  # give the location where you want to store checkpoints
         save_strategy='steps',
-        optim="paged_adamw_8bit",
-        lr_scheduler_type='cosine',
+        optim="adamw_torch",
         warmup_ratio=0.05,
         report_to="wandb"
     )
