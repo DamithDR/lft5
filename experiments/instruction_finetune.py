@@ -56,7 +56,7 @@ def run(args):
         dataset = pd.read_csv(f'data/permuted_data/{args.dataset_file_name}', sep='\t')
 
     data = Dataset.from_pandas(dataset[['instructions']])
-    splits = data.train_test_split(test_size=2000, shuffle=True, seed=42)
+    splits = data.train_test_split(test_size=0.2, shuffle=True, seed=42)
     data = splits['train'].shuffle()
     validation_data = splits["test"].shuffle()
 
@@ -110,16 +110,16 @@ def run(args):
         gradient_accumulation_steps=4,
         # auto_find_batch_size=True,
         per_device_train_batch_size=args.batch_size,
-        warmup_steps=100,
+        warmup_steps=1000,
         num_train_epochs=3,
         learning_rate=3e-4,
         fp16=False,
         evaluation_strategy="steps",
-        eval_steps=50,
-        save_steps=50,
+        eval_steps=args.eval_steps,
+        save_steps=args.eval_steps,
         load_best_model_at_end=True,
         save_total_limit=4,
-        logging_steps=25,
+        logging_steps=args.logging_steps,
         output_dir="output_dir",  # give the location where you want to store checkpoints
         save_strategy='steps',
         optim="adamw_torch",
@@ -151,6 +151,8 @@ if __name__ == '__main__':
     parser.add_argument('--dataset_file_name', type=str, required=True, help='comma separated dataset file names ')
     parser.add_argument('--cache_dir', type=str, required=False, help='cache directory')
     parser.add_argument('--word_limit', type=int, required=False, help='word limit')
+    parser.add_argument('--eval_steps', type=int, default=64000, required=False, help='eval steps')
+    parser.add_argument('--logging_steps', type=int, default=32000, required=False, help='logging steps')
     parser.add_argument('--batch_size', type=int, required=False, default=256,
                         help='training batch size')
     # parser.add_argument('--max_mem', type=str, required=True, help='max memory consumption per device')
