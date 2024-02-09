@@ -139,8 +139,8 @@ def run(args):
 
     model.config.use_cache = False  # silence the warnings. Please re-enable for inference!
     trainer.train()
-    model.save_pretrained(f'finetuned_{str(args.model_name).replace("/", "_")}')
-    with open(f'finetuned_{str(args.model_name).replace("/", "_")}/stat.txt', 'w') as f:
+    model.save_pretrained(f'finetuned_{str(args.model_name).replace("/", "_")}{args.model_output_path}')
+    with open(f'finetuned_{str(args.model_name).replace("/", "_")}{args.model_output_path}/stat.txt', 'w') as f:
         f.write(f'Data files used : {",".join(data_files)}\n')
         f.write(f'model used : {args.model_name}')
 
