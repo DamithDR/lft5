@@ -46,14 +46,16 @@ def print_trainable_parameters(model):
 
 
 def run(args):
+    file_path = args.file_path if args.file_path else 'data/permuted_data/'
+
     data_files = str(args.dataset_file_name).split(',')
     dataset = pd.DataFrame()
     if len(data_files) > 1:
         for data_file in data_files:
-            d_set = pd.read_csv(f'data/permuted_data/{data_file}', sep='\t')
+            d_set = pd.read_csv(f'{file_path}{data_file}', sep='\t')
             dataset = pd.concat([dataset, d_set], axis=0)
     else:
-        dataset = pd.read_csv(f'data/permuted_data/{args.dataset_file_name}', sep='\t')
+        dataset = pd.read_csv(f'{file_path}{args.dataset_file_name}', sep='\t')
 
     data = Dataset.from_pandas(dataset[['instructions']])
     splits = data.train_test_split(test_size=0.2, shuffle=True, seed=42)
@@ -149,8 +151,9 @@ if __name__ == '__main__':
     parser.add_argument('--model_type', type=str, required=True, help='model_type')
     parser.add_argument('--model_name', type=str, required=True, help='model_name')
     parser.add_argument('--dataset_file_name', type=str, required=True, help='comma separated dataset file names ')
+    parser.add_argument('--file_path', type=str, required=False, help='directory path for the files',
+                        default='data/permuted_data/')
     parser.add_argument('--cache_dir', type=str, required=False, help='cache directory')
-    parser.add_argument('--word_limit', type=int, required=False, help='word limit')
     parser.add_argument('--eval_steps', type=int, default=64000, required=False, help='eval steps')
     parser.add_argument('--logging_steps', type=int, default=32000, required=False, help='logging steps')
     parser.add_argument('--batch_size', type=int, required=False, default=256,

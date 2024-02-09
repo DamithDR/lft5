@@ -1,0 +1,2 @@
+Prompt
+If the following answer is relevant to the asked question, please say Relevant, Irrelevant otherwise, question: {question} - answer:{answer}
