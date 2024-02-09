@@ -122,7 +122,7 @@ def run(args):
         load_best_model_at_end=True,
         save_total_limit=4,
         logging_steps=args.logging_steps,
-        output_dir="output_dir",  # give the location where you want to store checkpoints
+        output_dir=args.model_output_path if args.model_output_path else "output_dir",
         save_strategy='steps',
         optim="adamw_torch",
         warmup_ratio=0.05,
@@ -154,6 +154,8 @@ if __name__ == '__main__':
     parser.add_argument('--file_path', type=str, required=False, help='directory path for the files',
                         default='data/permuted_data/')
     parser.add_argument('--cache_dir', type=str, required=False, help='cache directory')
+    parser.add_argument('--model_output_path', type=str, required=False, help='model output directory',
+                        default='output_dir')
     parser.add_argument('--eval_steps', type=int, default=64000, required=False, help='eval steps')
     parser.add_argument('--logging_steps', type=int, default=32000, required=False, help='logging steps')
     parser.add_argument('--batch_size', type=int, required=False, default=256,
