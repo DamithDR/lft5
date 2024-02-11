@@ -19,6 +19,7 @@ class PrivacyQAData(DataClass):
         return permutations
 
     def filter_dataset(self):
+        print(f'filter dataset started {self.data_source}')
         if self.tokenizer_name is not None:
             if len(self.input_df) > 0:
                 data = self.input_df['Segment'].tolist()
@@ -33,6 +34,7 @@ class PrivacyQAData(DataClass):
                 self.test_input_df['tokens'] = lengths
                 self.test_input_df = self.test_input_df.drop(
                     self.test_input_df[self.test_input_df['tokens'] > self.word_limit].index)
+        print(f'filter dataset finished {self.data_source}')
 
     def filter_dataset_whitespace(self):
 

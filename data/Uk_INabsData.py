@@ -17,6 +17,7 @@ class UK_INabsData(DataClass):
         return permutations
 
     def filter_dataset(self):
+        print(f'filter dataset started {self.data_source}')
         if self.tokenizer_name is not None:
             if len(self.input_df) > 0:
                 concat = self.input_df['judgement'] + self.input_df['summary']
@@ -33,7 +34,7 @@ class UK_INabsData(DataClass):
                 self.test_input_df['tokens'] = lengths
                 self.test_input_df = self.test_input_df.drop(
                     self.test_input_df[self.test_input_df['tokens'] > self.word_limit].index)
-
+        print(f'filter dataset finished {self.data_source}')
     def filter_dataset_whitespace(self):
         concat = self.input_df['judgement'] + self.input_df['summary']
         self.input_df['word_count'] = concat.apply(lambda x: len(x.split(' ')))

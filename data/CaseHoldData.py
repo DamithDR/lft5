@@ -44,6 +44,7 @@ class CaseHoldData(DataClass):
             self.test_input_df[self.test_input_df['word_count'] > self.word_limit].index)
 
     def filter_dataset(self):
+        print(f'filter dataset started {self.data_source}')
         self.flattern_text()
         if self.tokenizer_name is not None:
 
@@ -60,6 +61,7 @@ class CaseHoldData(DataClass):
                 self.test_input_df['tokens'] = lengths
                 self.test_input_df = self.test_input_df.drop(
                     self.test_input_df[self.test_input_df['tokens'] > self.word_limit].index)
+        print(f'filter dataset finished {self.data_source}')
 
     def flattern_text(self):
         self.input_df['concatenated'] = self.input_df['citing_prompt'] + self.input_df['holding_0'] \

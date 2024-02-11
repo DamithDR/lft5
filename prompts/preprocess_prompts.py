@@ -32,13 +32,15 @@ def run(args):
         "scotus.tsv": (ScotusData, 'lex_glue')
     }
     for file in prompt_files:
+        print(f'processing {file}')
         data_class, data_file = file_map.get(file)
         prompt_data = pd.read_csv(f'{base_path}/{file}', sep='\t')
         data_class = data_class(data_source=data_file, prompts=prompt_data['Prompt'], tokenizer_name=args.tokeniser)
-
+        print(f'generating permutations for {file}')
         train, test = data_class.generate_permutations()
         train.to_csv(f'{save_path}Train_{file}', sep='\t', index=False)
         test.to_csv(f'{save_path}Test_{file}', sep='\t', index=False)
+        print(f'finished processing {file}')
 
 
 if __name__ == '__main__':
