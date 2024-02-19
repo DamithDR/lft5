@@ -4,6 +4,7 @@ import gc
 import pandas as pd
 import torch
 from peft import PeftModel, PeftConfig
+from tqdm import tqdm
 from transformers import AutoTokenizer, AutoModelForCausalLM
 
 
@@ -69,20 +70,23 @@ def run(args):
     data_list = dataset['instructions'].to_list()
     total_no = len(dataset)
     with torch.inference_mode():
-        for i in range(0, total_no, args.batch_size):
-            prev_num = num
-            num = num + args.batch_size
-            data_batch = data_list[prev_num:num]
-            print(f'processing : {num}/{total_no}')
-            # encode the prompt
-            encoding = tokenizer(data_batch, padding=True, truncation=False, return_tensors="pt").to(model.device)
-            # do the inference
-            outputs = model.generate(input_ids=encoding.input_ids, attention_mask=encoding.attention_mask,
-                                     generation_config=gen_config)
-            detach = outputs.detach().cpu().numpy()
-            outputs = detach.tolist()
-            out_list.extend([tokenizer.decode(out, skip_special_tokens=True) for out in outputs])
-            clear_gpu_memory()
+        with tqdm(total=total_no) as pbar:
+            pbar.set_description('inference progress')
+            for i in range(0, total_no, args.batch_size):
+                prev_num = num
+                num = num + args.batch_size
+                data_batch = data_list[prev_num:num]
+                print(f'processing : {num}/{total_no}')
+                # encode the prompt
+                encoding = tokenizer(data_batch, padding=True, truncation=False, return_tensors="pt").to(model.device)
+                # do the inference
+                outputs = model.generate(input_ids=encoding.input_ids, attention_mask=encoding.attention_mask,
+                                         generation_config=gen_config)
+                detach = outputs.detach().cpu().numpy()
+                outputs = detach.tolist()
+                out_list.extend([tokenizer.decode(out, skip_special_tokens=True) for out in outputs])
+                pbar.update(args.batch_size)
+                clear_gpu_memory()
 
     predictions = pd.DataFrame({'gold': dataset['instructions'], 'predictions': out_list})
     flat_model_name = str(args.model_name).replace('/', '')
