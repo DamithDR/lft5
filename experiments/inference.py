@@ -6,9 +6,10 @@ import torch
 from peft import PeftModel, PeftConfig
 from transformers import AutoTokenizer, AutoModelForCausalLM
 
-import os
 
-os.environ["PYTORCH_CUDA_ALLOC_CONF"] = "max_split_size_mb:512"
+# import os
+#
+# os.environ["PYTORCH_CUDA_ALLOC_CONF"] = "max_split_size_mb:512"
 
 
 def clear_gpu_memory():
@@ -34,7 +35,7 @@ def run(args):
 
     # set teh generation configuration params
     gen_config = model_inf.generation_config
-    gen_config.max_new_tokens = 200
+    gen_config.max_new_tokens = 300
     gen_config.temperature = 0.2
     gen_config.top_p = 0.7
     gen_config.num_return_sequences = 1
@@ -56,11 +57,11 @@ def run(args):
     if len(data_files) > 1:
         dataset_name = 'all'
         for data_file in data_files:
-            d_set = pd.read_csv(f'data/permuted_data/{data_file}', sep='\t')
+            d_set = pd.read_csv(f'{args.file_path}{data_file}', sep='\t')
             dataset = pd.concat([dataset, d_set], axis=0)
     else:
         dataset_name = str(args.test_file_name).split('.')[0]
-        dataset = pd.read_csv(f'data/permuted_data/{args.test_file_name}', sep='\t')
+        dataset = pd.read_csv(f'{args.file_path}{args.test_file_name}', sep='\t')
 
     out_list = []
 
@@ -91,8 +92,8 @@ def run(args):
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(
         description='''evaluates models on legal instruction finetuning''')
-    parser.add_argument('--test_file_name', type=str, required=False, help='dataset_name')
     parser.add_argument('--model_name', type=str, required=True, help='model_name_or_path')
+    parser.add_argument('--file_path', type=str, required=True, default='data/permuted_data/', help='file_path')
     parser.add_argument('--batch_size', type=int, default=10, required=False, help='inference batch size')
 
     args = parser.parse_args()
