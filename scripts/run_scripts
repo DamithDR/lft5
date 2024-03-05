@@ -15,3 +15,5 @@ python -m experiments.instruction_finetune --eval_steps 12800 --logging_steps 64
 
 
 python -m experiments.inference --model_name LegalLLMs/falcon-7b-privacy_qa --batch_size 16 --file_path data/permuted_data/1_prompt/
+
+python -m eval.evaluation --tokeniser meta-llama/Llama-2-7b-hf --word_limit 1024 --file_path data/permuted_data/1_prompt/

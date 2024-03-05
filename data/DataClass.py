@@ -32,11 +32,11 @@ class DataClass:
                 self.input_df = pd.read_json(f'data/datafiles/{self.data_source}', lines=True)
         else:
             if data_config:
-                train_dataset = load_dataset(data_source, data_config, split='train')
-                test_dataset = load_dataset(data_source, data_config, split='test')
+                train_dataset = load_dataset(data_source, data_config, split='train', streaming=True)
+                test_dataset = load_dataset(data_source, data_config, split='test', streaming=True)
             else:
-                train_dataset = load_dataset(data_source, split='train')
-                test_dataset = load_dataset(data_source, split='test')
+                train_dataset = load_dataset(data_source, split='train', streaming=True)
+                test_dataset = load_dataset(data_source, split='test', streaming=True)
             self.input_df = train_dataset.to_pandas()
             self.test_input_df = test_dataset.to_pandas()
 
