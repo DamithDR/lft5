@@ -9,7 +9,8 @@ import config.word_limit
 
 
 class DataClass:
-    def __init__(self, data_source, prompts, data_config=None, context_alias="<default>", options_alias='<default>',
+    def __init__(self, data_source, prompts=None, data_config=None, context_alias="<default>",
+                 options_alias='<default>',
                  tokenizer_name=None):
         self.data_source = data_source
         self.data_config = data_config
@@ -85,3 +86,10 @@ class DataClass:
     @abstractmethod
     def permute(self, prompt, df, omit_ans=False):
         pass
+
+    @abstractmethod
+    def evaluate_results(self, predictions):
+        pass
+
+    def get_no_of_test_instances(self):
+        return len(self.test_input_df)

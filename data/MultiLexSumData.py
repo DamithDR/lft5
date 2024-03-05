@@ -60,3 +60,10 @@ class MultiLexSumData(DataClass):
             text = "-".join(documents.tolist())
             texts.append(text)
         self.test_input_df['text'] = texts
+
+    def get_gold_standards(self):
+        return self.test_input_df['summary/long'].tolist()
+
+    def evaluate_results(self, predictions):
+        print(predictions)
+

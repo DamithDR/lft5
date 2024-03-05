@@ -1,3 +1,5 @@
+import pandas as pd
+
 from data.DataClass import DataClass
 from data.datafiles.scotus_categories import categories
 
@@ -21,3 +23,12 @@ class ScotusData(DataClass):
                                               answer=answer)
             permutations.append(full_input)
         return permutations
+
+    def get_gold_standards(self):
+        return self.test_input_df['label'].tolist()
+
+    def evaluate_results(self, predictions):
+        df = pd.DataFrame({'predictions': predictions})
+        df.to_csv('scouts_predictions.tsv', sep='\t', index=False)
+
+        print(f'scouts predictions size = {len(predictions)}')

@@ -1,3 +1,5 @@
+import pandas as pd
+
 from data.DataClass import DataClass
 
 
@@ -44,3 +46,13 @@ class PrivacyQAData(DataClass):
         self.input_df = self.input_df.drop(self.input_df[self.input_df['word_count'] > self.word_limit].index)
         self.test_input_df = self.test_input_df.drop(
             self.test_input_df[self.test_input_df['word_count'] > self.word_limit].index)
+
+    def get_gold_standards(self):
+        return self.test_input_df['Label'].tolist()
+
+    def evaluate_results(self, predictions):
+        df = pd.DataFrame({'predictions': predictions})
+        df.to_csv('privacyqa_predictions.tsv', sep='\t', index=False)
+
+        print(f'privacyqa predictions size = {len(predictions)}')
+

@@ -1,3 +1,5 @@
+import pandas as pd
+
 from data.DataClass import DataClass
 
 
@@ -35,6 +37,7 @@ class UK_INabsData(DataClass):
                 self.test_input_df = self.test_input_df.drop(
                     self.test_input_df[self.test_input_df['tokens'] > self.word_limit].index)
         print(f'filter dataset finished {self.data_source}')
+
     def filter_dataset_whitespace(self):
         concat = self.input_df['judgement'] + self.input_df['summary']
         self.input_df['word_count'] = concat.apply(lambda x: len(x.split(' ')))
@@ -44,3 +47,12 @@ class UK_INabsData(DataClass):
         self.input_df = self.input_df.drop(self.input_df[self.input_df['word_count'] > self.word_limit].index)
         self.test_input_df = self.test_input_df.drop(
             self.test_input_df[self.test_input_df['word_count'] > self.word_limit].index)
+
+    def evaluate_results(self, predictions):
+        df = pd.DataFrame({'predictions': predictions})
+        df.to_csv('ukinabs_predictions.tsv', sep='\t', index=False)
+
+        print(f'ukinabs predictions size = {len(predictions)}')
+
+
+
