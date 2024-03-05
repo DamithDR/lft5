@@ -10,14 +10,15 @@ class MultiLexSumData(DataClass):
 
     def permute(self, prompt, df, omit_ans=False):
         permutations = []
-
+        answers = []
         for documents, summary in zip(df['sources'], df['summary/long']):
             text = "-".join(documents.tolist())
             if omit_ans:
+                answers.append(summary)
                 summary = ''
             full_input = self.generate_prompt(prompt=prompt, context=text, options='', answer=summary)
             permutations.append(full_input)
-        return permutations
+        return permutations, answers
 
     def filter_dataset(self):
         print(f'filter dataset started {self.data_source}')
@@ -66,4 +67,3 @@ class MultiLexSumData(DataClass):
 
     def evaluate_results(self, predictions):
         print(predictions)
-

@@ -12,13 +12,15 @@ class PrivacyQAData(DataClass):
 
     def permute(self, prompt, df, omit_ans=False):
         permutations = []
+        answers = []
         for question, context, label in zip(df['Query'], df['Segment'], df['Label']):
 
             if omit_ans:
+                answers.append(label)
                 label = ''
             full_input = self.generate_prompt(prompt=prompt, context=context, options=question, answer=label)
             permutations.append(full_input)
-        return permutations
+        return permutations, answers
 
     def filter_dataset(self):
         print(f'filter dataset started {self.data_source}')
@@ -55,4 +57,3 @@ class PrivacyQAData(DataClass):
         df.to_csv('privacyqa_predictions.tsv', sep='\t', index=False)
 
         print(f'privacyqa predictions size = {len(predictions)}')
-

@@ -76,12 +76,14 @@ class DataClass:
     def generate_permutations(self):
         train = []
         test = []
+        test_answers = []
         for prompt in self.prompts:
-            train_permutations = self.permute(prompt, self.input_df)
+            train_permutations, _ = self.permute(prompt, self.input_df)
             train.extend(train_permutations)
-            test_permutations = self.permute(prompt, self.test_input_df, omit_ans=True)
+            test_permutations, answers = self.permute(prompt, self.test_input_df, omit_ans=True)
             test.extend(test_permutations)
-        return pd.DataFrame({'instructions': train}), pd.DataFrame({'instructions': test})
+            test_answers.extend(answers)
+        return pd.DataFrame({'instructions': train}), pd.DataFrame({'instructions': test, 'answers': test_answers})
 
     @abstractmethod
     def permute(self, prompt, df, omit_ans=False):

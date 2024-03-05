@@ -11,12 +11,14 @@ class UK_INabsData(DataClass):
 
     def permute(self, prompt, df, omit_ans=False):
         permutations = []
+        answers = []
         for judgement, summary, in zip(df['judgement'], df['summary']):
             if omit_ans:
+                answers.append(summary)
                 summary = ''
             full_input = self.generate_prompt(prompt=prompt, context=judgement, options='', answer=summary)
             permutations.append(full_input)
-        return permutations
+        return permutations, answers
 
     def filter_dataset(self):
         print(f'filter dataset started {self.data_source}')
@@ -53,6 +55,3 @@ class UK_INabsData(DataClass):
         df.to_csv('ukinabs_predictions.tsv', sep='\t', index=False)
 
         print(f'ukinabs predictions size = {len(predictions)}')
-
-
-

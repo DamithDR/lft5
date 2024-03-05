@@ -16,15 +16,17 @@ class LedgarData(DataClass):
 
     def permute(self, prompt, df, omit_ans=False):
         permutations = []
+        answers = []
         for provision, label in zip(df['text'], df['label']):
             if omit_ans:
+                answers.append(self.ledgar_categories[label])
                 answer = ''
             else:
                 answer = self.ledgar_categories[label]
             full_input = self.generate_prompt(prompt=prompt, context=provision, options='',
                                               answer=answer)
             permutations.append(full_input)
-        return permutations
+        return permutations, answers
 
     def get_gold_standards(self):
         return self.test_input_df['label'].tolist()

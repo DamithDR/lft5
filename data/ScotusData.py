@@ -14,15 +14,17 @@ class ScotusData(DataClass):
 
     def permute(self, prompt, df, omit_ans=False):
         permutations = []
+        answers = []
         for opinion, label in zip(df['text'], df['label']):
             if omit_ans:
+                answers.append(self.scotus_categories[label])
                 answer = ''
             else:
                 answer = self.scotus_categories[label]
             full_input = self.generate_prompt(prompt=prompt, context=opinion, options='',
                                               answer=answer)
             permutations.append(full_input)
-        return permutations
+        return permutations, answers
 
     def get_gold_standards(self):
         return self.test_input_df['label'].tolist()

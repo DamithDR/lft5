@@ -18,6 +18,7 @@ class CaseHoldData(DataClass):
 
     def permute(self, prompt, df, omit_ans=False):
         permutations = []
+        answers = []
         for context, ans0, ans1, ans2, ans3, ans4, correct_ans in zip(df['citing_prompt'],
                                                                       df['holding_0'],
                                                                       df['holding_1'],
@@ -28,15 +29,16 @@ class CaseHoldData(DataClass):
                                                                       ):
             if not math.isnan(int(correct_ans)):
                 options = f"""1. {ans0.strip()}\n2. {ans1.strip()}\n3. {ans2.strip()}\n4. {ans3.strip()}\n5. {ans4.strip()}"""
+                ans_list = [ans0.strip(), ans1.strip(), ans2.strip(), ans3.strip(), ans4.strip()]
                 if omit_ans:
+                    answers.append(ans_list[int(correct_ans)])
                     answer = ''
                 else:
-                    ans_list = [ans0.strip(), ans1.strip(), ans2.strip(), ans3.strip(), ans4.strip()]
                     answer = ans_list[int(correct_ans)]
 
                 full_input = self.generate_prompt(prompt=prompt, context=context, options=options, answer=answer)
                 permutations.append(full_input)
-        return permutations
+        return permutations, answers
 
     def resolve_label_numbers(self, model_predictions):
         prediction_labels = []

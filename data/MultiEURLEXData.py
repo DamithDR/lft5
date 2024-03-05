@@ -34,9 +34,11 @@ class MultiEURLEXData(DataClass):
 
     def permute(self, prompt, df, omit_ans=False):
         permutations = []
+        answers = []
         for law, labels in zip(df['text'], df['labels']):
             label_lst = self.get_labels(list(labels))
             if omit_ans:
+                answers.append(",".join(label_lst))
                 answer = ''
             else:
                 answer = ",".join(label_lst)
@@ -44,7 +46,7 @@ class MultiEURLEXData(DataClass):
             full_input = self.generate_prompt(prompt=prompt, context=law, options='',
                                               answer=answer)
             permutations.append(full_input)
-        return permutations
+        return permutations, answers
 
     def get_gold_standards(self):
         return self.test_input_df['labels'].tolist()
